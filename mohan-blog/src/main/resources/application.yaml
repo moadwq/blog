@@ -1,0 +1,29 @@
+server:
+  port: 7777
+spring:
+  datasource:
+    username: root
+    password: 151463
+    url: jdbc:mysql://localhost:3306/mh_blog?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=GMT%2B8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  main:
+    banner-mode: off
+  servlet:
+    multipart:
+      max-file-size: 2MB
+      max-request-size: 5MB
+# 配置mybatis-plus
+mybatis-plus:
+  configuration:
+    # 开启mp日志（输出到控制台）
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+  global-config:
+    db-config:
+      # 配置全局的id生成策略，默认使用雪花算法
+      id-type: auto
+      # 配置全局的逻辑删除字段，0 没删除，1 删除
+      logic-delete-field: delFlag
+      logic-not-delete-value: 0
+      logic-delete-value: 1
+    banner: false

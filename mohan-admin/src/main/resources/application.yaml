@@ -1,0 +1,48 @@
+mybatis:
+  configuration:
+    # 开启mybatis日志
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    # 开启驼峰转换
+    map-underscore-to-camel-case: true
+  # 注册mapper.xml配置文件
+  mapper-locations: classpath:mapper/*.xml
+  # 别名
+  type-aliases-package: com.wsd.pojo
+
+spring:
+  datasource:
+    username: root
+    password: 151463
+    url: jdbc:mysql://localhost:3306/shirodb?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=GMT%2B8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+  # 设置json字符串的日期格式和时区
+  jackson:
+    date-format: yyyy-HH-dd HH:mm:ss
+    time-zone: GMT+8
+  # 关闭模板引擎缓存
+  thymeleaf:
+    cache: false
+  # 自定义接收的时间格式 默认dd/MM/yyyy
+  mvc:
+    format:
+      date: yyyy-MM-dd
+
+# 配置mybatis-plus
+mybatis-plus:
+  configuration:
+    # 开启mp日志（输出到控制台）
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+  global-config:
+    # 关闭mybatisPlus的 banner 图
+    banner: false
+    db-config:
+      # 配置全局的id生成策略，默认使用雪花算法
+      id-type: auto
+      # 配置表名前缀，所有的实体类名前缀加 tbl_ 才是表名
+      table-prefix: tbl_
+      # 配置全局的逻辑删除字段，0 没删除，1 删除
+      logic-delete-field: deleted
+      logic-not-delete-value: 0
+      logic-delete-value: 1
