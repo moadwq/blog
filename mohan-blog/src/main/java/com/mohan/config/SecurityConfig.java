@@ -50,6 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
             // 对于登录接口 允许匿名访问
             .antMatchers("/login").anonymous()
+            .antMatchers("/logout").authenticated()
             .antMatchers("/link/getAllLink").authenticated()
             // 除上面外的所有请求全部不需要认证即可访问
             .anyRequest().permitAll();
@@ -59,6 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .accessDeniedHandler(accessDeniedHandler)
             .authenticationEntryPoint(authenticationEntryPoint);
 
+        // 关闭 security 默认登出方式
         http.logout().disable();
 
         // 将jwt过滤器添加到 UsernamePassword 之前

@@ -7,6 +7,7 @@ import com.mohan.service.BlogLoginService;
 import com.mohan.utils.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,5 +26,10 @@ public class BlogLoginController {
         }
         ResponseResult result = blogLoginService.login(user);
         return result;
+    }
+
+    @PostMapping("/logout")
+    public ResponseResult logout(){
+        return blogLoginService.logout();
     }
 }
