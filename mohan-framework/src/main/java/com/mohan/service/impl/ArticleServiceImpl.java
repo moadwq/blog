@@ -8,6 +8,7 @@ import com.mohan.contants.ArticleConstants;
 import com.mohan.entity.Article;
 import com.mohan.mapper.ArticleMapper;
 import com.mohan.service.ArticleService;
+import com.mohan.utils.BeanCopyUtils;
 import com.mohan.utils.ResponseResult;
 import com.mohan.vo.HotArticleVo;
 import org.springframework.beans.BeanUtils;
@@ -35,19 +36,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         page(page, queryWrapper);// 分页
         List<Article> articles = page.getRecords();  // 获取查询结果
 
-        // 将List<Article>转换为List<HotArticleVo>
-        // 方式一：stream流
-//        List<HotArticleVo> articleVos = articles.stream()
-//                .map(HotArticleVo::new)
-//                .collect(Collectors.toList());
-        // 方式二：bean拷贝
-        List<HotArticleVo> articleVos = new ArrayList<>();
-        for (Article article : articles) {
-            HotArticleVo vo = new HotArticleVo();
-            // 将article属性拷贝到vo
-            BeanUtils.copyProperties(article,vo);
-            articleVos.add(vo);
-        }
-        return ResponseResult.okResult(articles);
+        // 类型转换
+        List<HotArticleVo> articleVos = BeanCopyUtils.copyBeanList(articles, HotArticleVo.class);
+
+        return ResponseResult.okResult(articleVos);
     }
 }
