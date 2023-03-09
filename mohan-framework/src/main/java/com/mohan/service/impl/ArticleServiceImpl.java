@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.mohan.contants.ArticleConstants;
 import com.mohan.entity.Article;
 import com.mohan.mapper.ArticleMapper;
 import com.mohan.service.ArticleService;
@@ -26,7 +27,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         // 封装查询条件
         LambdaQueryWrapper<Article> queryWrapper = new LambdaQueryWrapper<>();
         // 必须是正式文章
-        queryWrapper.eq(Article::getStatus,0);
+        queryWrapper.eq(Article::getStatus, ArticleConstants.ARTICLE_STATUS_NORMAL);
         // 按照浏览量进行降序排序
         queryWrapper.orderByDesc(Article::getViewCount);
         // 最多查10条消息
