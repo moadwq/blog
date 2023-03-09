@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PageVo implements Serializable {
+public class PageVo {
 
     private List rows;
     private Long total;

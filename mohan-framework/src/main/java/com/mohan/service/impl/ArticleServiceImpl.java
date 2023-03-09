@@ -11,6 +11,7 @@ import com.mohan.service.ArticleService;
 import com.mohan.service.CategoryService;
 import com.mohan.utils.BeanCopyUtils;
 import com.mohan.utils.ResponseResult;
+import com.mohan.vo.ArticleDetailVo;
 import com.mohan.vo.ArticleListVo;
 import com.mohan.vo.HotArticleVo;
 import com.mohan.vo.PageVo;
@@ -76,5 +77,17 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         // 封装到 Page 对象中
         PageVo pageVo = new PageVo(articleListVos,page.getTotal());
         return ResponseResult.okResult(pageVo);
+    }
+
+    @Override
+    public ResponseResult getArticleDetail(Long id) {
+        // 根据文章id查询文章信息
+        Article article = getById(id);
+        // 根据分类id查询分类名
+        String name = categoryService.getById(article.getCategoryId()).getName();
+        article.setCategoryName(name);
+        // 类型转换
+        ArticleDetailVo articleDetailVo = BeanCopyUtils.copyBean(article, ArticleDetailVo.class);
+        return ResponseResult.okResult(articleDetailVo);
     }
 }

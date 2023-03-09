@@ -10,12 +10,8 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CategoryVo implements Serializable {
+public class CategoryVo {
     private Long id;
     private String name;
 
-    public CategoryVo(Category category) {
-        this.id = category.getId();
-        this.name = category.getName();
-    }
 }

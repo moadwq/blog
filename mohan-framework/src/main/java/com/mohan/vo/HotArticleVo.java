@@ -10,14 +10,9 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class HotArticleVo implements Serializable {
+public class HotArticleVo {
     private Long id;
     private String title;
     private Long viewCount;
 
-    public HotArticleVo(Article article) {
-        this.id = article.getId();
-        this.title = article.getTitle();
-        this.viewCount = article.getViewCount();
-    }
 }

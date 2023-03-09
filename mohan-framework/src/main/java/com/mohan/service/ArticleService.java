@@ -22,4 +22,10 @@ public interface ArticleService extends IService<Article> {
      * @return  封装了文章列表的响应对象
      */
     ResponseResult ArticleList(Long categoryId, Integer pageNum, Integer pageSize);
+
+    /**
+     * 获取文章详情
+     * @param id 文章id
+     */
+    ResponseResult getArticleDetail(Long id);
 }
