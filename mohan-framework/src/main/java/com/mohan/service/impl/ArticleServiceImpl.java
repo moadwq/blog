@@ -10,10 +10,13 @@ import com.mohan.mapper.ArticleMapper;
 import com.mohan.service.ArticleService;
 import com.mohan.utils.BeanCopyUtils;
 import com.mohan.utils.ResponseResult;
+import com.mohan.vo.ArticleListVo;
 import com.mohan.vo.HotArticleVo;
+import com.mohan.vo.PageVo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 
 @Service
@@ -36,5 +39,27 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         List<HotArticleVo> articleVos = BeanCopyUtils.copyBeanList(articles, HotArticleVo.class);
 
         return ResponseResult.okResult(articleVos);
+    }
+
+    @Override
+    public ResponseResult ArticleList(Long categoryId, Integer pageNum, Integer pageSize) {
+        LambdaQueryWrapper<Article> articleQuery = new LambdaQueryWrapper<>();
+        // 判断 categoryId 是否不为空，不为空则 根据 类型id查
+        articleQuery.eq(Objects.nonNull(categoryId) && categoryId > 0,
+                                 Article::getCategoryId,
+                                 categoryId);
+        // 文章状态是发布的
+        articleQuery.eq(Article::getStatus,SystemConstants.ARTICLE_STATUS_NORMAL);
+        // 文章置顶，降序排序
+        articleQuery.orderByDesc(Article::getIsTop);
+        // 分页
+        Page<Article> page = new Page<>(pageNum, pageSize);
+        page(page,articleQuery);
+        // 获取并封装查询结果
+        List<Article> articles = page.getRecords();
+        List<ArticleListVo> articleListVos = BeanCopyUtils.copyBeanList(articles, ArticleListVo.class);
+
+        PageVo pageVo = new PageVo(articleListVos,page.getTotal());
+        return ResponseResult.okResult(pageVo);
     }
 }
