@@ -2,6 +2,7 @@ package com.mohan.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.mohan.entity.Category;
+import org.apache.ibatis.annotations.Mapper;
 
 
 /**
@@ -10,6 +11,7 @@ import com.mohan.entity.Category;
  * @author makejava
  * @since 2023-03-09 14:51:25
  */
+@Mapper
 public interface CategoryMapper extends BaseMapper<Category> {
 
 }

@@ -1,9 +1,9 @@
 package com.mohan.contants;
 
-public class ArticleConstants {
+public class SystemConstants {
 
     /**
-     * 文章是草稿
+     * 文章是草稿，或未发布
      */
     public static final int ARTICLE_STATUS_DRAFT = 1;
     /**

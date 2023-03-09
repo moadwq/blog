@@ -18,9 +18,9 @@ public class ArticleController {
     private ArticleService articleService;
 
     @GetMapping("/hotArticleList")
-    public ResponseResult<List<Article>> hotArticleList(){
+    public ResponseResult hotArticleList(){
         // 查询热门文章，封装返回
-        ResponseResult<List<Article>> result = articleService.hotArticleList();
+        ResponseResult result = articleService.hotArticleList();
         return result;
     }
 }
