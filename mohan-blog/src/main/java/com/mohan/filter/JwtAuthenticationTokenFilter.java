@@ -21,6 +21,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Objects;
 
 @Component
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
@@ -32,7 +33,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         // 获取请求头中的token
         String token = request.getHeader("token");
         if (!StringUtils.hasText(token)){
-            // 说明该接口不需要登录，放行
+            // 放行
             chain.doFilter(request,response);
             return;
         }
@@ -51,6 +52,13 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         String userId = claims.getSubject();
         // 从redis中获取用户信息
         LoginUser loginUser = redisCache.getCacheObject(SystemConstants.REDIS_USERKEY_PRE + userId);
+        // 如果获取不到
+        if (Objects.isNull(loginUser)){
+            // 提示重新登陆
+            ResponseResult result = ResponseResult.errorResult(AppHttpCodeEnum.NEED_LOGIN);
+            WebUtils.renderString(response, JSON.toJSONString(result));
+            return;
+        }
         // 存入SecurityContextHolder
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginUser,null,null);
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);

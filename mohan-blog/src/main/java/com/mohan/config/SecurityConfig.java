@@ -1,6 +1,8 @@
 package com.mohan.config;
 
 import com.mohan.filter.JwtAuthenticationTokenFilter;
+import com.mohan.handler.security.AccessDeniedHandlerImpl;
+import com.mohan.handler.security.AuthenticationEntryPointImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +21,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
+
+    @Autowired
+    private AuthenticationEntryPointImpl authenticationEntryPoint;
+
+    @Autowired
+    private AccessDeniedHandlerImpl accessDeniedHandler;
 
     @Override
     @Bean
@@ -45,6 +53,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/link/getAllLink").authenticated()
             // 除上面外的所有请求全部不需要认证即可访问
             .anyRequest().permitAll();
+
+        // 配置异常处理器
+        http.exceptionHandling()
+            .accessDeniedHandler(accessDeniedHandler)
+            .authenticationEntryPoint(authenticationEntryPoint);
 
         http.logout().disable();
 
