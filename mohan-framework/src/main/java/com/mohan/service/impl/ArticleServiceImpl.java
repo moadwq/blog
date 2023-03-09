@@ -8,19 +8,27 @@ import com.mohan.contants.SystemConstants;
 import com.mohan.entity.Article;
 import com.mohan.mapper.ArticleMapper;
 import com.mohan.service.ArticleService;
+import com.mohan.service.CategoryService;
 import com.mohan.utils.BeanCopyUtils;
 import com.mohan.utils.ResponseResult;
 import com.mohan.vo.ArticleListVo;
 import com.mohan.vo.HotArticleVo;
 import com.mohan.vo.PageVo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 
 @Service
 public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> implements ArticleService {
+
+    @Autowired
+    private CategoryService categoryService;
 
     @Override
     public ResponseResult hotArticleList() {
@@ -55,10 +63,17 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         // 分页
         Page<Article> page = new Page<>(pageNum, pageSize);
         page(page,articleQuery);
-        // 获取并封装查询结果
+        // 获取查询结果
         List<Article> articles = page.getRecords();
-        List<ArticleListVo> articleListVos = BeanCopyUtils.copyBeanList(articles, ArticleListVo.class);
 
+        articles = articles.parallelStream()
+                // 根据每个 article的分类id，查询分类名字，并设置
+                .peek(article -> article.setCategoryName(categoryService.getById(article.getCategoryId()).getName()))
+                .collect(Collectors.toList());
+
+        // 类型转换
+        List<ArticleListVo> articleListVos = BeanCopyUtils.copyBeanList(articles, ArticleListVo.class);
+        // 封装到 Page 对象中
         PageVo pageVo = new PageVo(articleListVos,page.getTotal());
         return ResponseResult.okResult(pageVo);
     }

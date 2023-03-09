@@ -15,6 +15,9 @@ import java.util.List;
  */
 public interface CategoryService extends IService<Category> {
 
-
+    /**
+     * 查询分类列表，若该分类没有文章，则排除
+     * @return 封装了分类列表的响应对象
+     */
     ResponseResult getCategoryList();
 }

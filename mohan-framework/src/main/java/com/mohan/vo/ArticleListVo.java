@@ -19,7 +19,7 @@ public class ArticleListVo implements Serializable {
     //文章摘要
     private String summary;
     //所属分类名字
-    private Long categoryName;
+    private String categoryName;
     //缩略图
     private String thumbnail;
     //访问量
