@@ -14,4 +14,8 @@ public class SystemConstants {
      * 友链状态为审核通过
      */
     public static final int LINK_STATUS_NORMAL = 0;
+    /**
+     * redis中userKey的拼接前缀
+     */
+    public static final String REDIS_USERKEY_PRE = "bloglogin:";
 }

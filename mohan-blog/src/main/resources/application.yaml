@@ -12,6 +12,11 @@ spring:
     multipart:
       max-file-size: 2MB
       max-request-size: 5MB
+  redis:
+    host: 192.168.153.104  # 地址
+    port: 6379  # 端口
+    password: 151463  # 密码
+    database: 0  # redis 数据库索引，默认为0
 
 # 配置mybatis-plus
 mybatis-plus:

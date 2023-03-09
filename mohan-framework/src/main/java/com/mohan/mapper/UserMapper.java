@@ -2,6 +2,7 @@ package com.mohan.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.mohan.entity.User;
+import org.apache.ibatis.annotations.Mapper;
 
 
 /**
@@ -10,6 +11,7 @@ import com.mohan.entity.User;
  * @author makejava
  * @since 2023-03-09 19:16:28
  */
+@Mapper
 public interface UserMapper extends BaseMapper<User> {
 
 }
