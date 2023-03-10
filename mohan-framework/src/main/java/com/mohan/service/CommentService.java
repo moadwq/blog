@@ -2,6 +2,7 @@ package com.mohan.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.mohan.entity.Comment;
+import com.mohan.utils.ResponseResult;
 
 
 /**
@@ -12,4 +13,16 @@ import com.mohan.entity.Comment;
  */
 public interface CommentService extends IService<Comment> {
 
+    /**
+     * 获取评论列表
+     * @param articleId 文章id
+     * @param pageNum 页码
+     * @param pageSize  页面大小
+     */
+    ResponseResult commentList(Long articleId, Integer pageNum, Integer pageSize);
+
+    /**
+     * 添加一条评论
+     */
+    ResponseResult addComment(Comment comment);
 }

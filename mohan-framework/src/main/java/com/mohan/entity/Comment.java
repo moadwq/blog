@@ -1,5 +1,7 @@
 package com.mohan.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
@@ -34,13 +36,17 @@ public class Comment  {
     private Long toCommentUserId;
     //回复目标评论id
     private Long toCommentId;
-    
+
+    @TableField(fill = FieldFill.INSERT)  // 标注该字段为自动填充，设置自动填充机制为插入时
     private Long createBy;
-    
+
+    @TableField(fill = FieldFill.INSERT)
     private Date createTime;
-    
+
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Long updateBy;
-    
+
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
     //删除标志（0 代表未删除，1 代表已删除）
     private Integer delFlag;

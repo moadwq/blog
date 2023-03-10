@@ -2,6 +2,7 @@ package com.mohan.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.mohan.entity.Comment;
+import org.apache.ibatis.annotations.Mapper;
 
 
 /**
@@ -10,6 +11,7 @@ import com.mohan.entity.Comment;
  * @author makejava
  * @since 2023-03-10 00:53:42
  */
+@Mapper
 public interface CommentMapper extends BaseMapper<Comment> {
 
 }
