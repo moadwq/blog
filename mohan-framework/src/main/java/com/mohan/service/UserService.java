@@ -2,6 +2,7 @@ package com.mohan.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.mohan.entity.User;
+import com.mohan.utils.ResponseResult;
 
 
 /**
@@ -12,4 +13,8 @@ import com.mohan.entity.User;
  */
 public interface UserService extends IService<User> {
 
+    /**
+     * 获取用户信息
+     */
+    ResponseResult getUserInfo();
 }

@@ -3,6 +3,7 @@ package com.mohan.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.mohan.contants.SystemConstants;
 import com.mohan.entity.Comment;
 import com.mohan.enums.AppHttpCodeEnum;
 import com.mohan.exception.SystemException;
@@ -14,16 +15,10 @@ import com.mohan.utils.ResponseResult;
 import com.mohan.vo.CommentVo;
 import com.mohan.vo.PageVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.Date;
 import java.util.List;
-import java.util.Objects;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 /**
  * 评论表(Comment)表服务实现类
@@ -38,11 +33,16 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     private UserService userService;
 
     @Override
-    public ResponseResult commentList(Long articleId, Integer pageNum, Integer pageSize) {
+    public ResponseResult commentList(String commentType, Long articleId, Integer pageNum, Integer pageSize) {
         // 查询对应文章根评论
         LambdaQueryWrapper<Comment> commentQuery = new LambdaQueryWrapper<>();
-        commentQuery.eq(Comment::getArticleId,articleId);
+        // 判断评论类型，文章评论时需要 根据文章id查
+        commentQuery.eq(SystemConstants.ARTICLE_COMMENT.equals(commentType),Comment::getArticleId,articleId);
+        // 根评论id为-1
         commentQuery.eq(Comment::getRootId,-1);
+        // 评论类型
+        commentQuery.eq(Comment::getType,commentType);
+        // 时间升序
         commentQuery.orderByAsc(Comment::getCreateTime);
         // 分页查询
         Page<Comment> page = new Page<>(pageNum,pageSize);
