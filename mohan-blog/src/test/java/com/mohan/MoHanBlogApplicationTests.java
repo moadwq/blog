@@ -24,11 +24,8 @@ public class MoHanBlogApplicationTests {
     @Test
     void contextLoads() {
     }
-
-
     @Test
     void name() {
-
 
     }
 }
