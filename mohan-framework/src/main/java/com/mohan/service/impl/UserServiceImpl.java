@@ -1,5 +1,6 @@
 package com.mohan.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mohan.entity.User;
 import com.mohan.mapper.UserMapper;
@@ -26,6 +27,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
         UserInfoVo userInfoVo = BeanCopyUtils.copyBean(user,UserInfoVo.class);
         return ResponseResult.okResult(userInfoVo);
+    }
+
+    @Override
+    public ResponseResult updateUserInfo(User user) {
+        updateById(user);
+        return ResponseResult.okResult();
     }
 }
 

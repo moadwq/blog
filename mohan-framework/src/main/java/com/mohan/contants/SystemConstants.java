@@ -28,4 +28,8 @@ public class SystemConstants {
      * 友链评论类型
      */
     public static final String LINK_COMMENT = "1";
+    /**
+     * 上传图片类型
+     */
+    public static final String[] IMG_TYPE = {"jpeg","png","jpg"};
 }
