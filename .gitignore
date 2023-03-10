@@ -2,4 +2,6 @@
 mohan-admin/target
 mohan-blog/target
 mohan-framework/target
-*/test
+mohan-blog/src/test
+mohan-admin/src/test
+mohan-framework/src/test
