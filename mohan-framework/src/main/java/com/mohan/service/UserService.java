@@ -22,4 +22,9 @@ public interface UserService extends IService<User> {
      * 修改用户信息
      */
     ResponseResult updateUserInfo(User user);
+
+    /**
+     * 用户注册
+     */
+    ResponseResult register(User user);
 }
