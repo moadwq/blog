@@ -5,27 +5,23 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mohan.contants.SystemConstants;
-import com.mohan.entity.Article;
+import com.mohan.domain.entity.Article;
 import com.mohan.mapper.ArticleMapper;
 import com.mohan.service.ArticleService;
 import com.mohan.service.CategoryService;
 import com.mohan.utils.BeanCopyUtils;
 import com.mohan.utils.RedisCache;
 import com.mohan.utils.ResponseResult;
-import com.mohan.vo.ArticleDetailVo;
-import com.mohan.vo.ArticleListVo;
-import com.mohan.vo.HotArticleVo;
-import com.mohan.vo.PageVo;
-import io.swagger.models.auth.In;
+import com.mohan.domain.vo.ArticleDetailVo;
+import com.mohan.domain.vo.ArticleListVo;
+import com.mohan.domain.vo.HotArticleVo;
+import com.mohan.domain.vo.PageVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 

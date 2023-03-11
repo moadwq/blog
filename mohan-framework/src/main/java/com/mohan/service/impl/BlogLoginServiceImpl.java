@@ -1,15 +1,15 @@
 package com.mohan.service.impl;
 
 import com.mohan.contants.SystemConstants;
-import com.mohan.entity.LoginUser;
-import com.mohan.entity.User;
+import com.mohan.domain.entity.LoginUser;
+import com.mohan.domain.entity.User;
 import com.mohan.service.BlogLoginService;
 import com.mohan.utils.BeanCopyUtils;
 import com.mohan.utils.JwtUtil;
 import com.mohan.utils.RedisCache;
 import com.mohan.utils.ResponseResult;
-import com.mohan.vo.BlogUserLoginVo;
-import com.mohan.vo.UserInfoVo;
+import com.mohan.domain.vo.BlogUserLoginVo;
+import com.mohan.domain.vo.UserInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

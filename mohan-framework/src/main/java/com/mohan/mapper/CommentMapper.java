@@ -1,7 +1,7 @@
 package com.mohan.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.mohan.entity.Comment;
+import com.mohan.domain.entity.Comment;
 import org.apache.ibatis.annotations.Mapper;
 
 

@@ -1,6 +1,6 @@
 package com.mohan.service;
 
-import com.mohan.entity.User;
+import com.mohan.domain.entity.User;
 import com.mohan.utils.ResponseResult;
 
 public interface BlogLoginService {

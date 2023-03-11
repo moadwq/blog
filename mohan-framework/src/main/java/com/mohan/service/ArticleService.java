@@ -1,10 +1,8 @@
 package com.mohan.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.mohan.entity.Article;
+import com.mohan.domain.entity.Article;
 import com.mohan.utils.ResponseResult;
-
-import java.util.List;
 
 public interface ArticleService extends IService<Article> {
 

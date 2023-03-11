@@ -1,11 +1,8 @@
-package com.mohan.vo;
+package com.mohan.domain.vo;
 
-import com.mohan.entity.Article;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.io.Serializable;
 
 @Data
 @NoArgsConstructor
