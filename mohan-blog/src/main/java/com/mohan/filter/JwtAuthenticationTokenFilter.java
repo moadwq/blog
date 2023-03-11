@@ -2,7 +2,7 @@ package com.mohan.filter;
 
 import com.alibaba.fastjson.JSON;
 import com.mohan.contants.SystemConstants;
-import com.mohan.entity.LoginUser;
+import com.mohan.domain.entity.LoginUser;
 import com.mohan.enums.AppHttpCodeEnum;
 import com.mohan.utils.JwtUtil;
 import com.mohan.utils.RedisCache;

@@ -1,7 +1,7 @@
 package com.mohan.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.mohan.entity.Link;
+import com.mohan.domain.entity.Link;
 
 
 /**

@@ -1,7 +1,7 @@
 package com.mohan.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.mohan.entity.Link;
+import com.mohan.domain.entity.Link;
 import com.mohan.utils.ResponseResult;
 
 

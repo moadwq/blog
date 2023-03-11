@@ -1,7 +1,7 @@
 package com.mohan.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.mohan.entity.Comment;
+import com.mohan.domain.entity.Comment;
 import com.mohan.utils.ResponseResult;
 
 

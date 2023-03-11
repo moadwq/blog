@@ -1,4 +1,4 @@
-package com.mohan.entity;
+package com.mohan.domain.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

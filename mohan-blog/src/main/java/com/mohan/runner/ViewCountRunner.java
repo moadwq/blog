@@ -1,9 +1,8 @@
 package com.mohan.runner;
 
 import com.mohan.contants.SystemConstants;
-import com.mohan.entity.Article;
+import com.mohan.domain.entity.Article;
 import com.mohan.mapper.ArticleMapper;
-import com.mohan.service.ArticleService;
 import com.mohan.utils.RedisCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**

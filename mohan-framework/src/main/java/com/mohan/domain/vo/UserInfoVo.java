@@ -1,4 +1,4 @@
-package com.mohan.vo;
+package com.mohan.domain.vo;
 
 import lombok.Data;
 import lombok.experimental.Accessors;

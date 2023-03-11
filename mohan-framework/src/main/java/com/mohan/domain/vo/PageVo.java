@@ -1,17 +1,17 @@
-package com.mohan.vo;
+package com.mohan.domain.vo;
 
-import com.mohan.entity.Category;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CategoryVo {
-    private Long id;
-    private String name;
+public class PageVo {
 
+    private List rows;
+    private Long total;
 }

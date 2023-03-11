@@ -1,8 +1,7 @@
 package com.mohan.job;
 
 import com.mohan.contants.SystemConstants;
-import com.mohan.entity.Article;
-import com.mohan.mapper.ArticleMapper;
+import com.mohan.domain.entity.Article;
 import com.mohan.service.ArticleService;
 import com.mohan.utils.RedisCache;
 import org.springframework.beans.factory.annotation.Autowired;
