@@ -20,6 +20,10 @@ public class SystemConstants {
     public static final String REDIS_USERKEY_PRE = "bloglogin:";
 
     /**
+     * redis中后台登录用户的userKey的拼接前缀
+     */
+    public static final String REDIS_ADMIN_USERKEY_PRE = "adminlogin:";
+    /**
      * 文章评论类型
      */
     public static final String ARTICLE_COMMENT = "0";
