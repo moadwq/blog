@@ -32,4 +32,8 @@ public class SystemConstants {
      * 上传图片类型
      */
     public static final String[] IMG_TYPE = {"jpeg","png","jpg"};
+    /**
+     * redis中，hash类型的文章id和浏览量 的键
+     */
+    public static final String ARTICLE_VIEWCOUNT_KEY = "article:viewCount";
 }

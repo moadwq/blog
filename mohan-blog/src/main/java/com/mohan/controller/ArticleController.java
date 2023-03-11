@@ -5,10 +5,7 @@ import com.mohan.service.ArticleService;
 import com.mohan.utils.ResponseResult;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -37,6 +34,13 @@ public class ArticleController {
     @GetMapping("/{id}")
     public ResponseResult getArticleDetail(@PathVariable("id") Long id){
         ResponseResult result = articleService.getArticleDetail(id);
+        return result;
+    }
+
+    // 更新浏览量
+    @PutMapping("/updateViewCount/{id}")
+    public ResponseResult updateViewCount(@PathVariable("id") Long id){
+        ResponseResult result = articleService.updateViewCount(id);
         return result;
     }
 }
