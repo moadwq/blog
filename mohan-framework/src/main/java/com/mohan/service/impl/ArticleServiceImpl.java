@@ -20,6 +20,7 @@ import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -42,12 +43,18 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         LambdaQueryWrapper<Article> queryWrapper = new LambdaQueryWrapper<>();
         // 必须是正式文章
         queryWrapper.eq(Article::getStatus, SystemConstants.ARTICLE_STATUS_NORMAL);
-        // 按照浏览量进行降序排序
-        queryWrapper.orderByDesc(Article::getViewCount);
+
         // 最多查10条消息
         IPage<Article> page = new Page<>(1,10);
         page(page, queryWrapper);// 分页
         List<Article> articles = page.getRecords();  // 获取查询结果
+
+        // 查询redis实时浏览量
+        replaceViewCount(articles);
+        // 按照浏览量降序排序
+        articles = articles.stream()
+                .sorted((o1, o2) -> o2.getViewCount().intValue() - o1.getViewCount().intValue())
+                .collect(Collectors.toList());
 
         // 类型转换
         List<HotArticleVo> articleVos = BeanCopyUtils.copyBeanList(articles, HotArticleVo.class);
@@ -86,8 +93,6 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         PageVo pageVo = new PageVo(articleListVos,page.getTotal());
         return ResponseResult.okResult(pageVo);
     }
-
-
 
     @Override
     public ResponseResult getArticleDetail(Long id) {

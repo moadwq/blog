@@ -1,5 +1,6 @@
 package com.mohan.controller;
 
+import com.mohan.annotation.SystemLog;
 import com.mohan.entity.Article;
 import com.mohan.service.ArticleService;
 import com.mohan.utils.ResponseResult;
@@ -17,6 +18,7 @@ public class ArticleController {
     private ArticleService articleService;
 
     // 热门文章列表
+    @SystemLog(businessName = "热门文章列表")
     @GetMapping("/hotArticleList")
     public ResponseResult hotArticleList(){
         // 查询热门文章，封装返回
@@ -25,6 +27,7 @@ public class ArticleController {
     }
     // 文章列表
     @GetMapping("/articleList")
+    @SystemLog(businessName = "查询文章列表")
     public ResponseResult articleList(Long categoryId, Integer pageNum, Integer pageSize){
         ResponseResult result = articleService.ArticleList(categoryId,pageNum,pageSize);
         return result;
@@ -32,6 +35,7 @@ public class ArticleController {
 
     // 文章正文详情页
     @GetMapping("/{id}")
+    @SystemLog(businessName = "文章正文详情页")
     public ResponseResult getArticleDetail(@PathVariable("id") Long id){
         ResponseResult result = articleService.getArticleDetail(id);
         return result;
@@ -39,6 +43,7 @@ public class ArticleController {
 
     // 更新浏览量
     @PutMapping("/updateViewCount/{id}")
+    @SystemLog(businessName = "更新浏览量")
     public ResponseResult updateViewCount(@PathVariable("id") Long id){
         ResponseResult result = articleService.updateViewCount(id);
         return result;
