@@ -3,6 +3,7 @@ package com.mohan.domain.dto;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.mohan.domain.entity.Tag;
+import com.mysql.cj.log.Log;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -42,7 +43,7 @@ public class ArticleDto {
     @ApiModelProperty(notes = "是否允许评论 1是，0否")
     private String isComment;
     // 标签
-    @ApiModelProperty(notes = "标签")
-    private List<Tag> tags;
+    @ApiModelProperty(notes = "标签id")
+    private List<Long> tags;
 
 }

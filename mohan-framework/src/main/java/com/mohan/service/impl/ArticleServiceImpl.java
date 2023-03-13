@@ -7,10 +7,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mohan.contants.SystemConstants;
 import com.mohan.domain.dto.ArticleDto;
 import com.mohan.domain.entity.Article;
+import com.mohan.domain.entity.ArticleTag;
 import com.mohan.domain.entity.Tag;
 import com.mohan.mapper.ArticleMapper;
 import com.mohan.mapper.TagMapper;
 import com.mohan.service.ArticleService;
+import com.mohan.service.ArticleTagService;
 import com.mohan.service.CategoryService;
 import com.mohan.service.TagService;
 import com.mohan.utils.BeanCopyUtils;
@@ -27,20 +29,18 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 
 @Service
 public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> implements ArticleService {
-
-    @Autowired
-    private ArticleMapper articleMapper;
-    @Autowired
-    private TagService tagService;
     @Autowired
     private CategoryService categoryService;
     @Autowired
     private RedisCache redisCache;
+    @Autowired
+    private ArticleTagService articleTagService;
 
     @Override
     public ResponseResult hotArticleList() {
@@ -126,10 +126,13 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     public ResponseResult addArticle(ArticleDto articleDto) {
         Article article = BeanCopyUtils.copyBean(articleDto, Article.class);
         // 添加文章
-        int articleId = articleMapper.insert(article);
+        save(article);
 
+        List<ArticleTag> articleTags = articleDto.getTags().stream()
+                .map(tagId -> new ArticleTag(article.getId(), tagId))
+                .collect(Collectors.toList());
         // 添加标签
-        tagService.saveBatch(articleDto.getTags());
+        articleTagService.saveBatch(articleTags);
 
         return ResponseResult.okResult();
     }
