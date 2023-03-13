@@ -44,35 +44,4 @@
         ORDER BY `parent_id`,`order_num`
     </select>
 
-
-    <resultMap id="menuVo" type="MenuVo">
-        <result  property="id" column="aid"/>
-        <result  property="menuName" column="amn"/>
-        <result  property="parentId" column="api"/>
-        <result  property="orderNum" column="aon"/>
-        <result  property="path" column="ap"/>
-        <result  property="component" column="ac"/>
-        <result  property="menuType" column="amt"/>
-        <result  property="visible" column="av"/>
-        <result  property="status" column="as"/>
-        <result  property="perms" column="ape"/>
-        <result  property="icon" column="ai"/>
-        <result  property="createTime" column="act"/>
-        <collection property="children" ofType="MenuVo">
-            <result  property="id" column="bid"/>
-            <result  property="menuName" column="bmn"/>
-            <result  property="parentId" column="bpi"/>
-            <result  property="orderNum" column="bon"/>
-            <result  property="path" column="bp"/>
-            <result  property="component" column="bc"/>
-            <result  property="menuType" column="bmt"/>
-            <result  property="visible" column="bv"/>
-            <result  property="status" column="bs"/>
-            <result  property="perms" column="bpe"/>
-            <result  property="icon" column="bi"/>
-            <result  property="createTime" column="bct"/>
-        </collection>
-    </resultMap>
-
-
 </mapper>
