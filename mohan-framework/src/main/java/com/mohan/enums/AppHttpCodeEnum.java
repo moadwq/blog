@@ -22,7 +22,9 @@ public enum AppHttpCodeEnum {
     REQUIRE_EMAIL(507, "必需填写邮箱"),
     LOGIN_ERROR(508,"用户名或密码错误"),
     CONTENT_NOT_NULL(509, "评论内容不能为空"),
-    FILETYPE_ERROR(510,"文件类型错误，请上传jpg/png/jpeg文件")
+    FILETYPE_ERROR(510,"文件类型错误，请上传jpg/png/jpeg文件"),
+
+    NO_ADMIN(511,"普通用户不能登录")
     ;
 
     int code;

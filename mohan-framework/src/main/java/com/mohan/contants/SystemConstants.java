@@ -62,4 +62,8 @@ public class SystemConstants {
      * 分类状态为正常
      */
     public static final int CATEGORY_STATUS_NORMAL = 0;
+    /**
+     * 用户类别是管理员
+     */
+    public static final String IS_ADMIN = "1";
 }
