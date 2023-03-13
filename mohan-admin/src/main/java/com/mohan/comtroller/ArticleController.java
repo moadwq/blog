@@ -1,6 +1,7 @@
 package com.mohan.comtroller;
 
 import com.mohan.domain.dto.ArticleDto;
+import com.mohan.domain.dto.ArticleListDto;
 import com.mohan.service.ArticleService;
 import com.mohan.utils.ResponseResult;
 import io.swagger.annotations.Api;
@@ -20,6 +21,13 @@ public class ArticleController {
     @ApiOperation(value = "添加博客")
     public ResponseResult addArticle(@RequestBody ArticleDto articleDto){
         ResponseResult result = articleService.addArticle(articleDto);
+        return result;
+    }
+
+    @GetMapping("/list")
+    @ApiOperation(value = "分页查询文章列表")
+    public ResponseResult list(ArticleListDto articleListDto){
+        ResponseResult result = articleService.pageList(articleListDto);
         return result;
     }
 }

@@ -6,9 +6,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mohan.contants.SystemConstants;
 import com.mohan.domain.dto.ArticleDto;
+import com.mohan.domain.dto.ArticleListDto;
 import com.mohan.domain.entity.Article;
 import com.mohan.domain.entity.ArticleTag;
 import com.mohan.domain.entity.Tag;
+import com.mohan.domain.vo.*;
 import com.mohan.mapper.ArticleMapper;
 import com.mohan.mapper.TagMapper;
 import com.mohan.service.ArticleService;
@@ -18,13 +20,10 @@ import com.mohan.service.TagService;
 import com.mohan.utils.BeanCopyUtils;
 import com.mohan.utils.RedisCache;
 import com.mohan.utils.ResponseResult;
-import com.mohan.domain.vo.ArticleDetailVo;
-import com.mohan.domain.vo.ArticleListVo;
-import com.mohan.domain.vo.HotArticleVo;
-import com.mohan.domain.vo.PageVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -140,6 +139,22 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         articleTagService.saveBatch(articleTags);
 
         return ResponseResult.okResult();
+    }
+
+    @Override
+    public ResponseResult pageList(ArticleListDto articleListDto) {
+        LambdaQueryWrapper<Article> qw = new LambdaQueryWrapper<>();
+        // 如果存在标题
+        qw.like(StringUtils.hasText(articleListDto.getTitle()),Article::getTitle,articleListDto.getTitle());
+        // 如果存在摘要
+        qw.like(StringUtils.hasText(articleListDto.getSummary()),Article::getSummary,articleListDto.getSummary());
+        // 分页
+        Page<Article> articlePage = new Page<>(articleListDto.getPageNum(), articleListDto.getPageSize());
+        page(articlePage,qw);
+
+        List<ArticlePageListVo> acs = BeanCopyUtils.copyBeanList(articlePage.getRecords(), ArticlePageListVo.class);
+
+        return ResponseResult.okResult(new PageVo(acs,articlePage.getTotal()));
     }
 
     /**

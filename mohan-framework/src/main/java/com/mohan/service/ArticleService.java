@@ -2,6 +2,7 @@ package com.mohan.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.mohan.domain.dto.ArticleDto;
+import com.mohan.domain.dto.ArticleListDto;
 import com.mohan.domain.entity.Article;
 import com.mohan.utils.ResponseResult;
 
@@ -38,4 +39,10 @@ public interface ArticleService extends IService<Article> {
      * 添加文章
      */
     ResponseResult addArticle(ArticleDto articleDto);
+
+    /**
+     * 按条件分页查询文章列表
+     */
+    ResponseResult pageList(ArticleListDto articleListDto);
+
 }
