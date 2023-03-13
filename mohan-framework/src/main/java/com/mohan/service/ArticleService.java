@@ -1,6 +1,7 @@
 package com.mohan.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.mohan.domain.dto.ArticleDto;
 import com.mohan.domain.entity.Article;
 import com.mohan.utils.ResponseResult;
 
@@ -32,4 +33,9 @@ public interface ArticleService extends IService<Article> {
      * @param id 文章id
      */
     ResponseResult updateViewCount(Long id);
+
+    /**
+     * 添加文章
+     */
+    ResponseResult addArticle(ArticleDto articleDto);
 }

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mohan.contants.SystemConstants;
 import com.mohan.domain.entity.Article;
 import com.mohan.domain.entity.Category;
+import com.mohan.domain.vo.CategoryListVo;
 import com.mohan.mapper.CategoryMapper;
 import com.mohan.service.ArticleService;
 import com.mohan.utils.BeanCopyUtils;
@@ -48,6 +49,15 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         // vo去重
         List<CategoryVo> categoryVos = BeanCopyUtils.copyBeanList(categories, CategoryVo.class);
         return ResponseResult.okResult(categoryVos);
+    }
+
+    @Override
+    public ResponseResult listAllCategory() {
+        LambdaQueryWrapper<Category> qw = new LambdaQueryWrapper<>();
+        qw.eq(Category::getStatus,SystemConstants.CATEGORY_STATUS_NORMAL);
+        List<Category> list = list(qw);
+        List<CategoryListVo> categoryListVos = BeanCopyUtils.copyBeanList(list, CategoryListVo.class);
+        return ResponseResult.okResult(categoryListVos);
     }
 }
 

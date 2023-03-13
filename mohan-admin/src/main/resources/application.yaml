@@ -39,5 +39,10 @@ mybatis-plus:
       logic-delete-value: 1
     banner: false
 
+oss:
+  accessKey: CPHKQwIzdgLdaFjvKqjZLL_tWPDEosioUrFSepia
+  secretKey: g8bfatlhlBF-y_7RcsdtQC7mtGRtxvLmwANa8_7V
+  bucket: mh-blog-image
+  url: http://rray0ungs.hn-bkt.clouddn.com/
 
 

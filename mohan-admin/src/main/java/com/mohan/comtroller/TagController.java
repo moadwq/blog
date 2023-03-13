@@ -3,6 +3,7 @@ package com.mohan.comtroller;
 import com.mohan.domain.dto.TagDto;
 import com.mohan.domain.entity.Tag;
 import com.mohan.domain.vo.PageVo;
+import com.mohan.domain.vo.TagListVo;
 import com.mohan.domain.vo.TagVo;
 import com.mohan.service.TagService;
 import com.mohan.utils.BeanCopyUtils;
@@ -19,14 +20,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/content/tag")
-@Api(description = "")
+@Api(description = "标签相关接口")
 public class TagController {
 
     @Autowired
     private TagService tagService;
 
     @GetMapping("/list")
-    @ApiOperation(value = "查询标签")
+    @ApiOperation(value = "按条件查询标签")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageNum", value = "页码"),
             @ApiImplicitParam(name = "pageSize", value = "页面大小")
@@ -67,5 +68,14 @@ public class TagController {
         tagService.updateById(tag);
         return ResponseResult.okResult();
     }
+
+    @GetMapping("/listAllTag")
+    @ApiOperation(value = "查询所有标签")
+    public ResponseResult listAllTag(){
+        List<Tag> list = tagService.list();
+        List<TagListVo> tagListVos = BeanCopyUtils.copyBeanList(list, TagListVo.class);
+        return ResponseResult.okResult(tagListVos);
+    }
+
 
 }

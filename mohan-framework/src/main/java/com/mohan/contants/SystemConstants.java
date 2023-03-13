@@ -58,4 +58,8 @@ public class SystemConstants {
      * 权限状态为失效
      */
     public static final int MENU_STATUS_DISABLE = 1;
+    /**
+     * 分类状态为正常
+     */
+    public static final int CATEGORY_STATUS_NORMAL = 0;
 }

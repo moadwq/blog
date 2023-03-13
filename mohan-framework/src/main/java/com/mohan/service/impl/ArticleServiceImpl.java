@@ -5,10 +5,14 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mohan.contants.SystemConstants;
+import com.mohan.domain.dto.ArticleDto;
 import com.mohan.domain.entity.Article;
+import com.mohan.domain.entity.Tag;
 import com.mohan.mapper.ArticleMapper;
+import com.mohan.mapper.TagMapper;
 import com.mohan.service.ArticleService;
 import com.mohan.service.CategoryService;
+import com.mohan.service.TagService;
 import com.mohan.utils.BeanCopyUtils;
 import com.mohan.utils.RedisCache;
 import com.mohan.utils.ResponseResult;
@@ -18,6 +22,7 @@ import com.mohan.domain.vo.HotArticleVo;
 import com.mohan.domain.vo.PageVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -28,6 +33,10 @@ import java.util.stream.Collectors;
 @Service
 public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> implements ArticleService {
 
+    @Autowired
+    private ArticleMapper articleMapper;
+    @Autowired
+    private TagService tagService;
     @Autowired
     private CategoryService categoryService;
     @Autowired
@@ -109,6 +118,19 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     public ResponseResult updateViewCount(Long id) {
         // 更新redis中对应的浏览量
         redisCache.incrementMapValue(SystemConstants.ARTICLE_VIEWCOUNT_KEY,id.toString(),1);
+        return ResponseResult.okResult();
+    }
+
+    @Override
+    @Transactional
+    public ResponseResult addArticle(ArticleDto articleDto) {
+        Article article = BeanCopyUtils.copyBean(articleDto, Article.class);
+        // 添加文章
+        int articleId = articleMapper.insert(article);
+
+        // 添加标签
+        tagService.saveBatch(articleDto.getTags());
+
         return ResponseResult.okResult();
     }
 

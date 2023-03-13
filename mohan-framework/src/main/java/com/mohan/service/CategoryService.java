@@ -18,4 +18,10 @@ public interface CategoryService extends IService<Category> {
      * @return 封装了分类列表的响应对象
      */
     ResponseResult getCategoryList();
+
+    /**
+     * 查询所有分类，状态为正常
+     */
+    ResponseResult listAllCategory();
+
 }

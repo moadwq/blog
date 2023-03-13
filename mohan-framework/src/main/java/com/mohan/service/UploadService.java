@@ -5,7 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface UploadService {
     /**
-     * 头像图片上传
+     * 图片上传
      */
     ResponseResult img(MultipartFile img);
 }
