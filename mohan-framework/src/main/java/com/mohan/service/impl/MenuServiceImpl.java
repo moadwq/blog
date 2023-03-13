@@ -8,18 +8,10 @@ import com.mohan.domain.vo.MenuVo;
 import com.mohan.domain.vo.RouterVo;
 import com.mohan.mapper.MenuMapper;
 import com.mohan.service.MenuService;
-import com.mohan.utils.BeanCopyUtils;
 import com.mohan.utils.ResponseResult;
-import com.mohan.utils.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sun.plugin2.util.SystemUtil;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
