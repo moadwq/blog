@@ -2,7 +2,11 @@ package com.mohan.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.mohan.domain.entity.Category;
+import com.mohan.domain.vo.CategoryListPageVo;
 import com.mohan.utils.ResponseResult;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 
 /**
@@ -20,8 +24,18 @@ public interface CategoryService extends IService<Category> {
     ResponseResult getCategoryList();
 
     /**
-     * 查询所有分类，状态为正常
+     * 查询所有状态正常的分类
      */
     ResponseResult listAllCategory();
+
+    /**
+     * 分页查询所有分类
+     */
+    ResponseResult pageList(Integer pageNum, Integer pageSize);
+
+    /**
+     * 导出数据到Excel
+     */
+    void export(HttpServletResponse response);
 
 }
