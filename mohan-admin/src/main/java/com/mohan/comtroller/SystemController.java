@@ -77,4 +77,11 @@ public class SystemController {
         return result;
     }
 
+    @PostMapping("/user/logout")
+    @ApiOperation(value = "退出登录")
+    public ResponseResult logout(){
+        ResponseResult result = systemLoginService.logout();
+        return result;
+    }
+
 }

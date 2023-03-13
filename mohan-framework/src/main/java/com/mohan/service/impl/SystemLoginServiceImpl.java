@@ -7,10 +7,7 @@ import com.mohan.domain.vo.BlogUserLoginVo;
 import com.mohan.domain.vo.UserInfoVo;
 import com.mohan.service.BlogLoginService;
 import com.mohan.service.SystemLoginService;
-import com.mohan.utils.BeanCopyUtils;
-import com.mohan.utils.JwtUtil;
-import com.mohan.utils.RedisCache;
-import com.mohan.utils.ResponseResult;
+import com.mohan.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -47,6 +44,16 @@ public class SystemLoginServiceImpl implements SystemLoginService {
         Map<String,String> map = new HashMap<>();
         map.put("token",jwt);
         return ResponseResult.okResult(map);
+    }
+
+    @Override
+    public ResponseResult logout() {
+        // 获取当前登录id
+        Long userId = SecurityUtil.getUserId();
+        // 删除redis中的数据
+        redisCache.deleteObject(SystemConstants.REDIS_ADMIN_USERKEY_PRE + userId);
+
+        return ResponseResult.okResult();
     }
 
 }

@@ -10,4 +10,9 @@ public interface SystemLoginService {
      */
     ResponseResult login(User user);
 
+    /**
+     * 退出登录
+     */
+    ResponseResult logout();
+
 }
