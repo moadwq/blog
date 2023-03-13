@@ -41,6 +41,8 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Autowired
     private ArticleTagService articleTagService;
 
+    @Autowired
+    private ArticleMapper articleMapper;
     @Override
     public ResponseResult hotArticleList() {
         // 封装查询条件
@@ -155,6 +157,13 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         List<ArticlePageListVo> acs = BeanCopyUtils.copyBeanList(articlePage.getRecords(), ArticlePageListVo.class);
 
         return ResponseResult.okResult(new PageVo(acs,articlePage.getTotal()));
+    }
+
+    @Override
+    public ResponseResult getArticle(Long id) {
+        ArticleTagVo articleTagVos = articleMapper.getArticle(id);
+        System.err.println(articleTagVos);
+        return ResponseResult.okResult(articleTagVos);
     }
 
     /**

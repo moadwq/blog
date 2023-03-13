@@ -45,4 +45,9 @@ public interface ArticleService extends IService<Article> {
      */
     ResponseResult pageList(ArticleListDto articleListDto);
 
+    /**
+     * 获取文章详细信息
+     * @param id 文章id
+     */
+    ResponseResult getArticle(Long id);
 }
