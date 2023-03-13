@@ -3,7 +3,7 @@ package com.mohan.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.mohan.domain.dto.TagListDto;
+import com.mohan.domain.dto.TagDto;
 import com.mohan.domain.entity.Tag;
 import com.mohan.domain.vo.PageVo;
 import com.mohan.domain.vo.TagVo;
@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * 标签(Tag)表服务实现类
@@ -27,11 +26,11 @@ import java.util.Objects;
 public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagService {
 
     @Override
-    public ResponseResult<PageVo> pageTagList(Integer pageNum, Integer pageSize, TagListDto tagListDto) {
+    public ResponseResult<PageVo> pageTagList(Integer pageNum, Integer pageSize, TagDto tagDto) {
         LambdaQueryWrapper<Tag> qw = new LambdaQueryWrapper<>();
         // 查询条件
-        qw.like(StringUtils.hasText(tagListDto.getName()),Tag::getName,tagListDto.getName());
-        qw.like(StringUtils.hasText(tagListDto.getRemark()),Tag::getRemark,tagListDto.getRemark());
+        qw.like(StringUtils.hasText(tagDto.getName()),Tag::getName,tagDto.getName());
+        qw.like(StringUtils.hasText(tagDto.getRemark()),Tag::getRemark,tagDto.getRemark());
 
         // 分页查询
         Page<Tag> tagPage = new Page<>(pageNum,pageSize);

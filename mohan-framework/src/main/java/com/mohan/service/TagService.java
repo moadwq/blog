@@ -1,7 +1,7 @@
 package com.mohan.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.mohan.domain.dto.TagListDto;
+import com.mohan.domain.dto.TagDto;
 import com.mohan.domain.entity.Tag;
 import com.mohan.domain.vo.PageVo;
 import com.mohan.utils.ResponseResult;
@@ -22,5 +22,5 @@ public interface TagService extends IService<Tag> {
      * @param tagListDto 查询条件
      * @return
      */
-    ResponseResult<PageVo> pageTagList(Integer pageNum, Integer pageSize, TagListDto tagListDto);
+    ResponseResult<PageVo> pageTagList(Integer pageNum, Integer pageSize, TagDto tagListDto);
 }
