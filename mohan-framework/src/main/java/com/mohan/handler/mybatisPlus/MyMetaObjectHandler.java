@@ -19,7 +19,6 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
         try {
             userId = SecurityUtil.getUserId();
         } catch (Exception e) {
-            e.printStackTrace();
             userId = -1L;//表示是自己创建
         }
         this.setFieldValByName("createTime", new Date(), metaObject);
@@ -34,7 +33,6 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
         try {
             userId = SecurityUtil.getUserId();
         } catch (Exception e) {
-            e.printStackTrace();
             userId = -1L;//表示是自己修改
         }
         this.setFieldValByName("updateTime", new Date(), metaObject);
