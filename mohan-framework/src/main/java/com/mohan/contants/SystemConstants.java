@@ -40,4 +40,22 @@ public class SystemConstants {
      * redis中，hash类型的文章id和浏览量 的键
      */
     public static final String ARTICLE_VIEWCOUNT_KEY = "article:viewCount";
+
+    /**
+     * 权限类型为菜单
+     */
+    public static final String MENUTYPE_MENU = "C";
+    /**
+     * 权限类型为按钮
+     */
+    public static final String MENUTYPE_BUTTON = "F";
+
+    /**
+     * 权限状态为正常
+     */
+    public static final int MENU_STATUS_NORMAL = 0;
+    /**
+     * 权限状态为失效
+     */
+    public static final int MENU_STATUS_DISABLE = 1;
 }
