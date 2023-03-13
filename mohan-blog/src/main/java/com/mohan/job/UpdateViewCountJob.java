@@ -28,7 +28,7 @@ public class UpdateViewCountJob {
      * 定时将redis中的文章浏览量更新到mysql中
      * 从每小时第0分开始，每十分钟执行一次定时任务
      */
-    @Scheduled(cron = "0 0/10 * * * ?")
+    @Scheduled(cron = "0/5 * * * * ?")
     public void testJob(){
         // 查询redis中的 文章id和浏览量
         Map<String, Integer> viewCountMap = redisCache.getCacheMap(SystemConstants.ARTICLE_VIEWCOUNT_KEY);

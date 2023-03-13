@@ -125,6 +125,11 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Transactional
     public ResponseResult addArticle(ArticleDto articleDto) {
         Article article = BeanCopyUtils.copyBean(articleDto, Article.class);
+        if (article.getIsTop().equals(0)){
+            article.setIsTop("1");
+        }else {
+            article.setIsTop("0");
+        }
         // 添加文章
         save(article);
 
