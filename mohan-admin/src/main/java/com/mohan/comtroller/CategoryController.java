@@ -75,8 +75,8 @@ public class CategoryController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseResult delCategory(@PathVariable("id") Long id){
-        categoryService.removeById(id);
+    public ResponseResult delCategory(@PathVariable("id") List<Long> ids){
+        categoryService.removeByIds(ids);
         return ResponseResult.okResult();
     }
 

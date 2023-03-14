@@ -1,15 +1,19 @@
 package com.mohan.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mohan.contants.SystemConstants;
+import com.mohan.domain.dto.LinkPageDto;
 import com.mohan.domain.entity.Link;
+import com.mohan.domain.vo.PageVo;
 import com.mohan.mapper.LinkMapper;
 import com.mohan.service.LinkService;
 import com.mohan.utils.BeanCopyUtils;
 import com.mohan.utils.ResponseResult;
 import com.mohan.domain.vo.LinkVo;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -32,6 +36,18 @@ public class LinkServiceImpl extends ServiceImpl<LinkMapper, Link> implements Li
         List<LinkVo> linkVos = BeanCopyUtils.copyBeanList(links, LinkVo.class);
         // 封装返回
         return ResponseResult.okResult(linkVos);
+    }
+
+    @Override
+    public ResponseResult pageList(LinkPageDto ld) {
+        LambdaQueryWrapper<Link> qw = new LambdaQueryWrapper<>();
+        qw.like(StringUtils.hasText(ld.getName()),Link::getName,ld.getName());
+        qw.like(StringUtils.hasText(ld.getStatus()),Link::getStatus,ld.getStatus());
+        Page<Link> linkPage = new Page<>(ld.getPageNum(), ld.getPageSize());
+        page(linkPage,qw);
+
+        PageVo pageVo = new PageVo(linkPage.getRecords(), linkPage.getTotal());
+        return ResponseResult.okResult(pageVo);
     }
 }
 
