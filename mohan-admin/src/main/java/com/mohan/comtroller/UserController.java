@@ -2,6 +2,7 @@ package com.mohan.comtroller;
 
 import com.mohan.domain.dto.AddUserDto;
 import com.mohan.domain.dto.UserPageDto;
+import com.mohan.domain.entity.User;
 import com.mohan.service.UserService;
 import com.mohan.utils.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,12 @@ public class UserController {
     @DeleteMapping("/{id}")
     public ResponseResult delUser(@PathVariable("id") List<Long> ids){
         ResponseResult result = userService.delUser(ids);
+        return result;
+    }
+
+    @GetMapping("/{id}")
+    public ResponseResult getUserAndRole(@PathVariable("id") Long id){
+        ResponseResult result = userService.getUserAndRole(id);
         return result;
     }
 

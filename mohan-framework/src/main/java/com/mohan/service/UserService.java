@@ -46,4 +46,9 @@ public interface UserService extends IService<User> {
      * 删除用户和其关联的角色id
      */
     ResponseResult delUser(List<Long> ids);
+
+    /**
+     * 查询用户和所有状态正常的角色信息
+     */
+    ResponseResult getUserAndRole(Long id);
 }

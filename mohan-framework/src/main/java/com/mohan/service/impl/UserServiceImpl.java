@@ -3,15 +3,19 @@ package com.mohan.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.mohan.contants.SystemConstants;
 import com.mohan.domain.dto.AddUserDto;
 import com.mohan.domain.dto.UserPageDto;
+import com.mohan.domain.entity.Role;
 import com.mohan.domain.entity.User;
 import com.mohan.domain.entity.UserRole;
 import com.mohan.domain.vo.PageVo;
+import com.mohan.domain.vo.UserRoleVo;
 import com.mohan.enums.AppHttpCodeEnum;
 import com.mohan.exception.SystemException;
 import com.mohan.mapper.UserMapper;
 import com.mohan.mapper.UserRoleMapper;
+import com.mohan.service.RoleService;
 import com.mohan.service.UserRoleService;
 import com.mohan.utils.BeanCopyUtils;
 import com.mohan.utils.ResponseResult;
@@ -25,7 +29,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -43,6 +49,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     private UserRoleService userRoleService;
     @Autowired
     private UserRoleMapper userRoleMapper;
+    @Autowired
+    private RoleService roleService;
     @Override
     public ResponseResult getUserInfo() {
         Long userId = SecurityUtil.getUserId();
@@ -148,6 +156,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             userRoleMapper.deleteByUserId(id);
         }
         return ResponseResult.okResult();
+    }
+
+    @Override
+    public ResponseResult getUserAndRole(Long id) {
+        User user = getById(id);
+        // 查所有角色
+        LambdaQueryWrapper<Role> qw = new LambdaQueryWrapper<>();
+        qw.eq(Role::getStatus, SystemConstants.ROLE_STATUS_NORMAL);
+        List<Role> roles = roleService.list(qw);
+        List<Long> roleIds = roles.stream().map(Role::getId).collect(Collectors.toList());
+        UserRoleVo userRoleVo = new UserRoleVo(roleIds, roles, user);
+        return ResponseResult.okResult(userRoleVo);
     }
 
     /**
