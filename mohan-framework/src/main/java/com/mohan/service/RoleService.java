@@ -1,7 +1,9 @@
 package com.mohan.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.mohan.domain.dto.RoleDto;
 import com.mohan.domain.entity.Role;
+import com.mohan.utils.ResponseResult;
 
 import java.util.List;
 
@@ -19,4 +21,9 @@ public interface RoleService extends IService<Role> {
      * @param id 用户id
      */
     List<String> selectRoleKeyByUserId(Long id);
+
+    /**
+     * 分页模糊查询角色
+     */
+    ResponseResult pageList(RoleDto roleDto);
 }
