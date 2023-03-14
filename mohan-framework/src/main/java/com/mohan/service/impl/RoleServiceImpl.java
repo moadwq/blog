@@ -96,5 +96,16 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         roleMenuService.saveBatch(roleMenus);
         return ResponseResult.okResult();
     }
+
+    @Override
+    @Transactional
+    public ResponseResult delRole(List<Long> ids) {
+        removeByIds(ids);
+        // 删除菜单id
+        for (Long id : ids) {
+            roleMenuMapper.deleteByRoleId(id);
+        }
+        return ResponseResult.okResult();
+    }
 }
 

@@ -38,4 +38,9 @@ public interface RoleService extends IService<Role> {
      * 更新角色信息和其拥有的菜单信息
      */
     ResponseResult updateRole(UpdateRoleDto updateRoleDto);
+
+    /**
+     * 删除角色和其关联的菜单
+     */
+    ResponseResult delRole(List<Long> ids);
 }

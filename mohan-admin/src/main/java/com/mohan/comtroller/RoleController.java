@@ -11,6 +11,8 @@ import com.mohan.utils.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/system/role")
 public class RoleController {
@@ -48,6 +50,10 @@ public class RoleController {
         return result;
     }
 
-
+    @DeleteMapping("/{id}")
+    public ResponseResult delRole(@PathVariable("id")List<Long> ids){
+        ResponseResult result = roleService.delRole(ids);
+        return result;
+    }
 
 }
