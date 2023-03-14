@@ -161,9 +161,17 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
     @Override
     public ResponseResult getArticle(Long id) {
-        ArticleTagVo articleTagVos = articleMapper.getArticle(id);
-        System.err.println(articleTagVos);
-        return ResponseResult.okResult(articleTagVos);
+        ArticleTagVo articleTagVo = articleMapper.getArticle(id);
+        if(Objects.isNull(articleTagVo)){
+            Article article = getById(id);
+            return ResponseResult.okResult(article);
+        }
+        if (articleTagVo.getIsTop().equals(0)){
+            articleTagVo.setIsTop("1");
+        }else {
+            articleTagVo.setIsTop("0");
+        }
+        return ResponseResult.okResult(articleTagVo);
     }
 
     /**
