@@ -29,7 +29,8 @@ public enum AppHttpCodeEnum {
     NO_ADMIN(511,"普通用户不能登录"),
     MENU_FAILED(512, "上级菜单不能是自己"),
     HAVE_CHILDREN_MENU(513, "拥有子菜单，不能删除"),
-    COMMENT_NO(520, "当前文章禁止评论");
+    COMMENT_NO(520, "当前文章禁止评论"),
+    UPLOAD_TIMES(530, "每天只能上传一次头像");
 
 
 

@@ -74,4 +74,6 @@ public class SystemConstants {
      * 文章允许评论
      */
     public static final String COMMENT_OK = "0";
+
+    public static String userId = "";
 }
