@@ -42,4 +42,10 @@ public class MenuController {
         return result;
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseResult delMenu(@PathVariable("id") Long id){
+        ResponseResult result = menuService.delMenu(id);
+        return result;
+    }
+
 }

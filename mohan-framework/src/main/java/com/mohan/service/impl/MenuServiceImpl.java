@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -90,6 +91,21 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
             throw new SystemException(AppHttpCodeEnum.MENU_FAILED);
         }
         updateById(menu);
+        return ResponseResult.okResult();
+    }
+
+    @Override
+    public ResponseResult delMenu(Long id) {
+        // 如果有子菜单，不能删除
+        LambdaQueryWrapper<Menu> qw = new LambdaQueryWrapper<>();
+        qw.eq(Menu::getParentId,id);
+        List<Menu> list = list(qw);
+        System.err.println(list);
+        if(list.size() != 0){
+            throw new SystemException(AppHttpCodeEnum.HAVE_CHILDREN_MENU);
+        }
+        // 没有子菜单，可以删除
+        removeById(id);
         return ResponseResult.okResult();
     }
 

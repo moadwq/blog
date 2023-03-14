@@ -39,4 +39,9 @@ public interface MenuService extends IService<Menu> {
      * 修改菜单信息
      */
     ResponseResult updateMenu(Menu menu);
+
+    /**
+     * 删除菜单
+     */
+    ResponseResult delMenu(Long id);
 }

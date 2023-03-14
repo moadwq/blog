@@ -25,7 +25,8 @@ public enum AppHttpCodeEnum {
     FILETYPE_ERROR(510,"文件类型错误，请上传jpg/png/jpeg文件"),
 
     NO_ADMIN(511,"普通用户不能登录"),
-    MENU_FAILED(512, "上级菜单不能是自己");
+    MENU_FAILED(512, "上级菜单不能是自己"),
+    HAVE_CHILDREN_MENU(513, "拥有子菜单，不能删除");
 
     int code;
     String msg;
