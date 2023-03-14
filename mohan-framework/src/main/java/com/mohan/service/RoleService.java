@@ -1,6 +1,7 @@
 package com.mohan.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.mohan.domain.dto.AddRoleDto;
 import com.mohan.domain.dto.RoleDto;
 import com.mohan.domain.entity.Role;
 import com.mohan.utils.ResponseResult;
@@ -26,4 +27,9 @@ public interface RoleService extends IService<Role> {
      * 分页模糊查询角色
      */
     ResponseResult pageList(RoleDto roleDto);
+
+    /**
+     * 添加角色
+     */
+    ResponseResult addRole(AddRoleDto addRoleDto);
 }

@@ -3,18 +3,25 @@ package com.mohan.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.mohan.domain.dto.AddRoleDto;
 import com.mohan.domain.dto.RoleDto;
 import com.mohan.domain.entity.Role;
+import com.mohan.domain.entity.RoleMenu;
 import com.mohan.domain.vo.PageVo;
 import com.mohan.mapper.RoleMapper;
+import com.mohan.service.RoleMenuService;
 import com.mohan.service.RoleService;
+import com.mohan.utils.BeanCopyUtils;
 import com.mohan.utils.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * 角色信息表(Role)表服务实现类
@@ -27,6 +34,8 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
 
     @Autowired
     private RoleMapper roleMapper;
+    @Autowired
+    private RoleMenuService roleMenuService;
 
     @Override
     public List<String> selectRoleKeyByUserId(Long id) {
@@ -55,6 +64,18 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         PageVo pageVo = new PageVo(rolePage.getRecords(), rolePage.getTotal());
 
         return ResponseResult.okResult(pageVo);
+    }
+
+    @Override
+    @Transactional
+    public ResponseResult addRole(AddRoleDto addRoleDto) {
+        Role role = BeanCopyUtils.copyBean(addRoleDto, Role.class);
+        save(role);
+        List<RoleMenu> roleMenus = addRoleDto.getMenuIds().stream()
+                .map(menuId -> new RoleMenu(role.getId(), menuId))
+                .collect(Collectors.toList());
+        roleMenuService.saveBatch(roleMenus);
+        return ResponseResult.okResult();
     }
 }
 

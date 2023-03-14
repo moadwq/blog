@@ -1,5 +1,6 @@
 package com.mohan.comtroller;
 
+import com.mohan.domain.dto.AddRoleDto;
 import com.mohan.domain.dto.RoleDto;
 import com.mohan.domain.dto.RoleStatusDto;
 import com.mohan.domain.entity.Role;
@@ -10,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/system/role/")
+@RequestMapping("/system/role")
 public class RoleController {
 
     @Autowired
@@ -28,5 +29,10 @@ public class RoleController {
         return ResponseResult.okResult();
     }
 
+    @PostMapping()
+    public ResponseResult addRole(@RequestBody AddRoleDto addRoleDto){
+        ResponseResult result = roleService.addRole(addRoleDto);
+        return result;
+    }
 
 }
