@@ -60,5 +60,8 @@ public class User  {
     private Integer delFlag;
 
 
-
+    public User(Long id, String status) {
+        this.id = id;
+        this.status = status;
+    }
 }

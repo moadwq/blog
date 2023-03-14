@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mohan.contants.SystemConstants;
 import com.mohan.domain.dto.AddUserDto;
+import com.mohan.domain.dto.ChangeUserDto;
 import com.mohan.domain.dto.UserPageDto;
 import com.mohan.domain.entity.Role;
 import com.mohan.domain.entity.User;
@@ -84,9 +85,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             throw new SystemException(AppHttpCodeEnum.USERNAME_EXIST);
         } else if (userInfoExist(2,user.getNickName())) {
             throw new SystemException(AppHttpCodeEnum.NICKNAME_EXIST);
-        } else if (userInfoExist(3, user.getEmail())) {
-            throw new SystemException(AppHttpCodeEnum.EMAIL_EXIST);
         }
+//        else if (userInfoExist(3, user.getEmail())) {
+//            throw new SystemException(AppHttpCodeEnum.EMAIL_EXIST);
+//        }
         // 密码加密
         String encodePassword = passwordEncoder.encode(user.getPassword());
         // 添加用户
@@ -130,11 +132,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             throw new SystemException(AppHttpCodeEnum.USERNAME_EXIST);
         } else if (userInfoExist(2,user.getNickName())) {
             throw new SystemException(AppHttpCodeEnum.NICKNAME_EXIST);
-        } else if (userInfoExist(3, user.getEmail())) {
-            throw new SystemException(AppHttpCodeEnum.EMAIL_EXIST);
-        } else if (userInfoExist(4, user.getPhonenumber())) {
-            throw new SystemException(AppHttpCodeEnum.PHONE_NUMBER_EXIST);
         }
+//        else if (userInfoExist(3, user.getEmail())) {
+//            throw new SystemException(AppHttpCodeEnum.EMAIL_EXIST);
+//        } else if (userInfoExist(4, user.getPhonenumber())) {
+//            throw new SystemException(AppHttpCodeEnum.PHONE_NUMBER_EXIST);
+//        }
         // 密码加密
         String encodePassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodePassword);
@@ -189,6 +192,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 .map(roleId -> new UserRole(user.getId(), roleId))
                 .collect(Collectors.toList());
         userRoleService.saveBatch(userRoles);
+        return ResponseResult.okResult();
+    }
+
+    @Override
+    public ResponseResult changeStatus(ChangeUserDto cd) {
+        User user = new User(cd.getUserId(), cd.getStatus());
+        updateById(user);
         return ResponseResult.okResult();
     }
 

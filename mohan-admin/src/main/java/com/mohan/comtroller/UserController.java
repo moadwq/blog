@@ -1,13 +1,11 @@
 package com.mohan.comtroller;
 
-import com.mohan.domain.dto.AddUserDto;
-import com.mohan.domain.dto.UpdateRoleDto;
-import com.mohan.domain.dto.UpdateUserDto;
-import com.mohan.domain.dto.UserPageDto;
+import com.mohan.domain.dto.*;
 import com.mohan.domain.entity.User;
 import com.mohan.domain.vo.UserDto;
 import com.mohan.domain.vo.UserRoleVo;
 import com.mohan.service.UserService;
+import com.mohan.utils.BeanCopyUtils;
 import com.mohan.utils.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -48,6 +46,12 @@ public class UserController {
     @PutMapping()
     public ResponseResult updateUser(@RequestBody UserDto userDto){
         ResponseResult result = userService.updateUser(userDto);
+        return result;
+    }
+
+    @PutMapping("/changeStatus")
+    public ResponseResult changeStatus(@RequestBody ChangeUserDto cd){
+        ResponseResult result = userService.changeStatus(cd);
         return result;
     }
 
