@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mohan.contants.SystemConstants;
+import com.mohan.domain.dto.LinkDto;
 import com.mohan.domain.dto.LinkPageDto;
 import com.mohan.domain.entity.Link;
 import com.mohan.domain.vo.PageVo;
@@ -48,6 +49,13 @@ public class LinkServiceImpl extends ServiceImpl<LinkMapper, Link> implements Li
 
         PageVo pageVo = new PageVo(linkPage.getRecords(), linkPage.getTotal());
         return ResponseResult.okResult(pageVo);
+    }
+
+    @Override
+    public ResponseResult changeLinkStatus(LinkDto linkDto) {
+        Link link = BeanCopyUtils.copyBean(linkDto, Link.class);
+        updateById(link);
+        return ResponseResult.okResult();
     }
 }
 

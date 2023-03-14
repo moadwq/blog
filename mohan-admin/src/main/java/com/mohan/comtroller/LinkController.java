@@ -1,5 +1,6 @@
 package com.mohan.comtroller;
 
+import com.mohan.domain.dto.LinkDto;
 import com.mohan.domain.dto.LinkPageDto;
 import com.mohan.domain.entity.Link;
 import com.mohan.service.LinkService;
@@ -44,5 +45,11 @@ public class LinkController {
     public ResponseResult delLink(@PathVariable("id") List<Long> ids){
         linkService.removeByIds(ids);
         return ResponseResult.okResult();
+    }
+
+    @PutMapping("/changeLinkStatus")
+    public ResponseResult changeLinkStatus(@RequestBody LinkDto linkDto){
+        ResponseResult result = linkService.changeLinkStatus(linkDto);
+        return result;
     }
 }

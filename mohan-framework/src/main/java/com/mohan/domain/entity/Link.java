@@ -46,6 +46,8 @@ public class Link  {
     //删除标志（0 代表未删除，1 代表已删除）
     private Integer delFlag;
 
-
-
+    public Link(Long id, String status) {
+        this.id = id;
+        this.status = status;
+    }
 }
