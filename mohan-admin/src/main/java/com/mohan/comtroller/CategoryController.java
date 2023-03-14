@@ -2,6 +2,7 @@ package com.mohan.comtroller;
 
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.fastjson.JSON;
+import com.mohan.domain.dto.CategoryPageDto;
 import com.mohan.domain.entity.Category;
 import com.mohan.domain.vo.CategoryListPageVo;
 import com.mohan.domain.vo.CategoryListVo;
@@ -18,16 +19,14 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/content/category/")
+@RequestMapping("/content/category")
 @Api(description = "分类相关接口")
 public class CategoryController {
 
@@ -43,12 +42,8 @@ public class CategoryController {
 
     @GetMapping("/list")
     @ApiOperation(value = "分页查询所有分类")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "pageNum",value = "页码"),
-            @ApiImplicitParam(name = "pageSize",value = "页面大小")
-    })
-    public ResponseResult pageList(Integer pageNum,Integer pageSize){
-        ResponseResult result = categoryService.pageList(pageNum,pageSize);
+    public ResponseResult pageList(CategoryPageDto CategoryPageDto){
+        ResponseResult result = categoryService.pageList(CategoryPageDto);
         return result;
     }
 
@@ -60,5 +55,29 @@ public class CategoryController {
         categoryService.export(response);
     }
 
+    @PostMapping()
+    public ResponseResult addCategory(@RequestBody Category cv){
+        categoryService.save(cv);
+        return ResponseResult.okResult();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseResult getCategory(@PathVariable("id") Long id){
+        Category category = categoryService.getById(id);
+        return ResponseResult.okResult(category);
+    }
+
+    @PutMapping()
+    public ResponseResult updateCategory(@RequestBody CategoryListPageVo cv){
+        Category category = BeanCopyUtils.copyBean(cv, Category.class);
+        categoryService.updateById(category);
+        return ResponseResult.okResult();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseResult delCategory(@PathVariable("id") Long id){
+        categoryService.removeById(id);
+        return ResponseResult.okResult();
+    }
 
 }

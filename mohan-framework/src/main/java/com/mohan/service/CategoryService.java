@@ -1,6 +1,7 @@
 package com.mohan.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.mohan.domain.dto.CategoryPageDto;
 import com.mohan.domain.entity.Category;
 import com.mohan.domain.vo.CategoryListPageVo;
 import com.mohan.utils.ResponseResult;
@@ -29,9 +30,9 @@ public interface CategoryService extends IService<Category> {
     ResponseResult listAllCategory();
 
     /**
-     * 分页查询所有分类
+     * 分页模糊查询所有分类
      */
-    ResponseResult pageList(Integer pageNum, Integer pageSize);
+    ResponseResult pageList(CategoryPageDto CategoryPageDto);
 
     /**
      * 导出数据到Excel
