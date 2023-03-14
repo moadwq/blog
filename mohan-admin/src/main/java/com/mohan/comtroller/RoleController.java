@@ -3,6 +3,7 @@ package com.mohan.comtroller;
 import com.mohan.domain.dto.AddRoleDto;
 import com.mohan.domain.dto.RoleDto;
 import com.mohan.domain.dto.RoleStatusDto;
+import com.mohan.domain.dto.UpdateRoleDto;
 import com.mohan.domain.entity.Role;
 import com.mohan.service.RoleService;
 import com.mohan.utils.BeanCopyUtils;
@@ -39,6 +40,12 @@ public class RoleController {
     public ResponseResult getRoleById(@PathVariable("id") Long id){
         Role role = roleService.getById(id);
         return ResponseResult.okResult(role);
+    }
+
+    @PutMapping()
+    public ResponseResult updateRole(@RequestBody UpdateRoleDto updateRoleDto){
+        ResponseResult result = roleService.updateRole(updateRoleDto);
+        return result;
     }
 
 }

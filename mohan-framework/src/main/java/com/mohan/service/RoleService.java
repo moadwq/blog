@@ -3,6 +3,7 @@ package com.mohan.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.mohan.domain.dto.AddRoleDto;
 import com.mohan.domain.dto.RoleDto;
+import com.mohan.domain.dto.UpdateRoleDto;
 import com.mohan.domain.entity.Role;
 import com.mohan.utils.ResponseResult;
 
@@ -32,4 +33,9 @@ public interface RoleService extends IService<Role> {
      * 添加角色
      */
     ResponseResult addRole(AddRoleDto addRoleDto);
+
+    /**
+     * 更新角色信息和其拥有的菜单信息
+     */
+    ResponseResult updateRole(UpdateRoleDto updateRoleDto);
 }

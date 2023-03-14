@@ -5,10 +5,12 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mohan.domain.dto.AddRoleDto;
 import com.mohan.domain.dto.RoleDto;
+import com.mohan.domain.dto.UpdateRoleDto;
 import com.mohan.domain.entity.Role;
 import com.mohan.domain.entity.RoleMenu;
 import com.mohan.domain.vo.PageVo;
 import com.mohan.mapper.RoleMapper;
+import com.mohan.mapper.RoleMenuMapper;
 import com.mohan.service.RoleMenuService;
 import com.mohan.service.RoleService;
 import com.mohan.utils.BeanCopyUtils;
@@ -36,7 +38,8 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     private RoleMapper roleMapper;
     @Autowired
     private RoleMenuService roleMenuService;
-
+    @Autowired
+    private RoleMenuMapper roleMenuMapper;
     @Override
     public List<String> selectRoleKeyByUserId(Long id) {
         // 如果是超级管理员，只需要返回 "admin"
@@ -72,6 +75,22 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         Role role = BeanCopyUtils.copyBean(addRoleDto, Role.class);
         save(role);
         List<RoleMenu> roleMenus = addRoleDto.getMenuIds().stream()
+                .map(menuId -> new RoleMenu(role.getId(), menuId))
+                .collect(Collectors.toList());
+        roleMenuService.saveBatch(roleMenus);
+        return ResponseResult.okResult();
+    }
+
+    @Override
+    @Transactional
+    public ResponseResult updateRole(UpdateRoleDto updateRoleDto) {
+        // 修改角色信息
+        Role role = BeanCopyUtils.copyBean(updateRoleDto, Role.class);
+        updateById(role);
+        // 修改菜单信息
+        roleMenuMapper.deleteByRoleId(role.getId());
+        List<Long> menuIds = updateRoleDto.getMenuIds();
+        List<RoleMenu> roleMenus = menuIds.stream()
                 .map(menuId -> new RoleMenu(role.getId(), menuId))
                 .collect(Collectors.toList());
         roleMenuService.saveBatch(roleMenus);
