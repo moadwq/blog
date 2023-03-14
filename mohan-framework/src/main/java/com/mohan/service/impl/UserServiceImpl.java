@@ -3,12 +3,15 @@ package com.mohan.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.mohan.domain.dto.AddUserDto;
 import com.mohan.domain.dto.UserPageDto;
 import com.mohan.domain.entity.User;
+import com.mohan.domain.entity.UserRole;
 import com.mohan.domain.vo.PageVo;
 import com.mohan.enums.AppHttpCodeEnum;
 import com.mohan.exception.SystemException;
 import com.mohan.mapper.UserMapper;
+import com.mohan.service.UserRoleService;
 import com.mohan.utils.BeanCopyUtils;
 import com.mohan.utils.ResponseResult;
 import com.mohan.utils.SecurityUtil;
@@ -20,6 +23,8 @@ import com.mohan.service.UserService;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * 用户表(User)表服务实现类
@@ -32,7 +37,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
+    @Autowired
+    private UserRoleService userRoleService;
     @Override
     public ResponseResult getUserInfo() {
         Long userId = SecurityUtil.getUserId();
@@ -91,6 +97,44 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return ResponseResult.okResult(pageVo);
     }
 
+    @Override
+    public ResponseResult addUser(AddUserDto addUserDto) {
+        User user = BeanCopyUtils.copyBean(addUserDto, User.class);
+        // 对数据进行非空判断
+        if (!StringUtils.hasText(user.getUserName())){
+            throw new SystemException(AppHttpCodeEnum.REQUIRE_USERNAME);
+        } else if (!StringUtils.hasText(user.getPassword())) {
+            throw new SystemException(AppHttpCodeEnum.REQUIRE_PASSWORD);
+        } else if (!StringUtils.hasText(user.getNickName())) {
+            throw new SystemException(AppHttpCodeEnum.REQUIRE_NICKNAME);
+        } else if (!StringUtils.hasText(user.getEmail())) {
+            throw new SystemException(AppHttpCodeEnum.REQUIRE_EMAIL);
+        } else if (!StringUtils.hasText(user.getPhonenumber())) {
+            throw new SystemException(AppHttpCodeEnum.REQUIRE_PHONE_NUMBER);
+        }
+        // 对数据是否重复进行判断
+        if (userInfoExist(1,user.getUserName())){
+            throw new SystemException(AppHttpCodeEnum.USERNAME_EXIST);
+        } else if (userInfoExist(2,user.getNickName())) {
+            throw new SystemException(AppHttpCodeEnum.NICKNAME_EXIST);
+        } else if (userInfoExist(3, user.getEmail())) {
+            throw new SystemException(AppHttpCodeEnum.EMAIL_EXIST);
+        } else if (userInfoExist(4, user.getPhonenumber())) {
+            throw new SystemException(AppHttpCodeEnum.PHONE_NUMBER_EXIST);
+        }
+        // 密码加密
+        String encodePassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodePassword);
+        // 添加用户
+        save(user);
+        // 添加用户关联的角色id
+        List<UserRole> userRoles = addUserDto.getRoleIds().stream()
+                .map(roleId -> new UserRole(user.getId(), roleId))
+                .collect(Collectors.toList());
+        userRoleService.saveBatch(userRoles);
+        return ResponseResult.okResult();
+    }
+
     /**
      * 判断用户信息是否存在
      * @param num  用户信息的类别
@@ -107,6 +151,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 break;
             case 3:
                 queryWrapper.eq(User::getEmail,exist);
+                break;
+            case 4:
+                queryWrapper.eq(User::getPhonenumber,exist);
                 break;
         }
         // count() 返回和条件匹配的用户数量

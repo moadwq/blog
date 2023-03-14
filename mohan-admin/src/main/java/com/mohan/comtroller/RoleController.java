@@ -56,4 +56,10 @@ public class RoleController {
         return result;
     }
 
+    @GetMapping("/listAllRole")
+    public ResponseResult listAllRole(){
+        List<Role> list = roleService.list();
+        return ResponseResult.okResult(list);
+    }
+
 }

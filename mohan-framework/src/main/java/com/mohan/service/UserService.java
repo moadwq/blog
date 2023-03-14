@@ -1,6 +1,7 @@
 package com.mohan.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.mohan.domain.dto.AddUserDto;
 import com.mohan.domain.dto.UserPageDto;
 import com.mohan.domain.entity.User;
 import com.mohan.utils.ResponseResult;
@@ -33,4 +34,9 @@ public interface UserService extends IService<User> {
      * 分页模糊查询
      */
     ResponseResult pageList(UserPageDto userPageDto);
+
+    /**
+     * 添加用户和其关联的角色id
+     */
+    ResponseResult addUser(AddUserDto addUserDto);
 }
