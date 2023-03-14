@@ -115,6 +115,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     @Override
     public List<MenuTreeVo> treeselect() {
         LambdaQueryWrapper<Menu> qw = new LambdaQueryWrapper<>();
+        qw.eq(Menu::getStatus,SystemConstants.MENU_STATUS_NORMAL);
         qw.orderByAsc(Menu::getParentId);
         qw.orderByAsc(Menu::getOrderNum);
         List<Menu> list = list(qw);

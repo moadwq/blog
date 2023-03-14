@@ -3,6 +3,7 @@ package com.mohan.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.mohan.contants.SystemConstants;
 import com.mohan.domain.dto.AddRoleDto;
 import com.mohan.domain.dto.RoleDto;
 import com.mohan.domain.dto.UpdateRoleDto;
@@ -106,6 +107,14 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
             roleMenuMapper.deleteByRoleId(id);
         }
         return ResponseResult.okResult();
+    }
+
+    @Override
+    public ResponseResult listAllRole() {
+        LambdaQueryWrapper<Role> qw = new LambdaQueryWrapper<>();
+        qw.eq(Role::getStatus, SystemConstants.ROLE_STATUS_NORMAL);
+        List<Role> roles = list(qw);
+        return ResponseResult.okResult(roles);
     }
 }
 

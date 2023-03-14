@@ -43,4 +43,11 @@ public interface RoleService extends IService<Role> {
      * 删除角色和其关联的菜单
      */
     ResponseResult delRole(List<Long> ids);
+
+    /**
+     * 查询所有状态正常的角色
+     * @return
+     */
+    ResponseResult listAllRole();
+
 }

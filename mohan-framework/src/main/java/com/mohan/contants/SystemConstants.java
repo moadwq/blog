@@ -51,7 +51,7 @@ public class SystemConstants {
     public static final String MENUTYPE_BUTTON = "F";
 
     /**
-     * 权限状态为正常
+     * 菜单状态为正常
      */
     public static final int MENU_STATUS_NORMAL = 0;
     /**
@@ -66,4 +66,8 @@ public class SystemConstants {
      * 用户类别是管理员
      */
     public static final String IS_ADMIN = "1";
+    /**
+     * 角色状态为正常
+     */
+    public static final int ROLE_STATUS_NORMAL = 0;
 }
