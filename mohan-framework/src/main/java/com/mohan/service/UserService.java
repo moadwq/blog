@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.mohan.domain.dto.AddUserDto;
 import com.mohan.domain.dto.UserPageDto;
 import com.mohan.domain.entity.User;
+import com.mohan.domain.vo.UserDto;
 import com.mohan.utils.ResponseResult;
 
 import java.util.List;
@@ -48,7 +49,12 @@ public interface UserService extends IService<User> {
     ResponseResult delUser(List<Long> ids);
 
     /**
-     * 查询用户和所有状态正常的角色信息
+     * 查询用户和其角色及所有状态正常的角色信息
      */
     ResponseResult getUserAndRole(Long id);
+
+    /**
+     * 修改用户信息及其关联的角色id
+     */
+    ResponseResult updateUser(UserDto userDto);
 }

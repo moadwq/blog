@@ -10,6 +10,7 @@ import com.mohan.domain.entity.Role;
 import com.mohan.domain.entity.User;
 import com.mohan.domain.entity.UserRole;
 import com.mohan.domain.vo.PageVo;
+import com.mohan.domain.vo.UserDto;
 import com.mohan.domain.vo.UserRoleVo;
 import com.mohan.enums.AppHttpCodeEnum;
 import com.mohan.exception.SystemException;
@@ -161,13 +162,34 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public ResponseResult getUserAndRole(Long id) {
         User user = getById(id);
+        // 查用户具有的角色id
+        LambdaQueryWrapper<UserRole> urq = new LambdaQueryWrapper<>();
+        urq.eq(UserRole::getUserId,user.getId());
+        List<UserRole> userRoles = userRoleService.list(urq);
+        List<Long> roleIds = userRoles.stream().map(UserRole::getRoleId).collect(Collectors.toList());
         // 查所有角色
         LambdaQueryWrapper<Role> qw = new LambdaQueryWrapper<>();
         qw.eq(Role::getStatus, SystemConstants.ROLE_STATUS_NORMAL);
         List<Role> roles = roleService.list(qw);
-        List<Long> roleIds = roles.stream().map(Role::getId).collect(Collectors.toList());
+
         UserRoleVo userRoleVo = new UserRoleVo(roleIds, roles, user);
         return ResponseResult.okResult(userRoleVo);
+    }
+
+    @Override
+    @Transactional
+    public ResponseResult updateUser(UserDto userDto) {
+        User user = BeanCopyUtils.copyBean(userDto, User.class);
+        // 修改用户信息
+        updateById(user);
+        // 修改角色id
+        userRoleMapper.deleteByUserId(user.getId());
+        List<Long> roleIds = userDto.getRoleIds();
+        List<UserRole> userRoles = roleIds.stream()
+                .map(roleId -> new UserRole(user.getId(), roleId))
+                .collect(Collectors.toList());
+        userRoleService.saveBatch(userRoles);
+        return ResponseResult.okResult();
     }
 
     /**

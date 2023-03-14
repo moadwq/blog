@@ -1,8 +1,12 @@
 package com.mohan.comtroller;
 
 import com.mohan.domain.dto.AddUserDto;
+import com.mohan.domain.dto.UpdateRoleDto;
+import com.mohan.domain.dto.UpdateUserDto;
 import com.mohan.domain.dto.UserPageDto;
 import com.mohan.domain.entity.User;
+import com.mohan.domain.vo.UserDto;
+import com.mohan.domain.vo.UserRoleVo;
 import com.mohan.service.UserService;
 import com.mohan.utils.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +42,12 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseResult getUserAndRole(@PathVariable("id") Long id){
         ResponseResult result = userService.getUserAndRole(id);
+        return result;
+    }
+
+    @PutMapping()
+    public ResponseResult updateUser(@RequestBody UserDto userDto){
+        ResponseResult result = userService.updateUser(userDto);
         return result;
     }
 
