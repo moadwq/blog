@@ -1,8 +1,11 @@
 package com.mohan.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.mohan.domain.dto.UserPageDto;
 import com.mohan.domain.entity.User;
+import com.mohan.domain.vo.PageVo;
 import com.mohan.enums.AppHttpCodeEnum;
 import com.mohan.exception.SystemException;
 import com.mohan.mapper.UserMapper;
@@ -15,6 +18,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.mohan.service.UserService;
 import org.springframework.util.StringUtils;
+
+import java.util.List;
 
 /**
  * 用户表(User)表服务实现类
@@ -69,6 +74,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         user.setPassword(encodePassword);
         save(user);
         return ResponseResult.okResult();
+    }
+
+    @Override
+    public ResponseResult pageList(UserPageDto userPageDto) {
+        LambdaQueryWrapper<User> qw = new LambdaQueryWrapper<>();
+        qw.like(StringUtils.hasText(userPageDto.getUserName()),User::getUserName,userPageDto.getUserName());
+        qw.like(StringUtils.hasText(userPageDto.getPhonenumber()),User::getPhonenumber,userPageDto.getPhonenumber());
+        qw.like(StringUtils.hasText(userPageDto.getStatus()),User::getStatus,userPageDto.getStatus());
+        // 分页
+        Page<User> userPage = new Page<>(userPageDto.getPageNum(), userPageDto.getPageSize());
+        page(userPage,qw);
+
+        PageVo pageVo = new PageVo(userPage.getRecords(), userPage.getTotal());
+
+        return ResponseResult.okResult(pageVo);
     }
 
     /**
