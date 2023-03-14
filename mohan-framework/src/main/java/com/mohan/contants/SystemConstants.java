@@ -70,4 +70,8 @@ public class SystemConstants {
      * 角色状态为正常
      */
     public static final int ROLE_STATUS_NORMAL = 0;
+    /**
+     * 文章允许评论
+     */
+    public static final String COMMENT_OK = "0";
 }

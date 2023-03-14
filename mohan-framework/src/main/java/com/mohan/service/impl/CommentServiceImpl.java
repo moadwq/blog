@@ -4,10 +4,12 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mohan.contants.SystemConstants;
+import com.mohan.domain.entity.Article;
 import com.mohan.domain.entity.Comment;
 import com.mohan.enums.AppHttpCodeEnum;
 import com.mohan.exception.SystemException;
 import com.mohan.mapper.CommentMapper;
+import com.mohan.service.ArticleService;
 import com.mohan.service.CommentService;
 import com.mohan.service.UserService;
 import com.mohan.utils.BeanCopyUtils;
@@ -28,7 +30,8 @@ import java.util.List;
  */
 @Service("commentService")
 public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> implements CommentService {
-
+    @Autowired
+    private ArticleService articleService;
     @Autowired
     private UserService userService;
 
@@ -47,7 +50,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         // 分页查询
         Page<Comment> page = new Page<>(pageNum,pageSize);
         page(page,commentQuery);
-        
+
         List<CommentVo> commentVos = toCommentVoList(page.getRecords());
 
         commentVos.stream()
@@ -57,12 +60,18 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
                     commentVo.setChildren(children);
                 });
 
-        
+
         return ResponseResult.okResult(new PageVo(commentVos,page.getTotal()));
     }
 
     @Override
     public ResponseResult addComment(Comment comment) {
+        // 判断文章是否允许评论
+        Article article = articleService.getById(comment.getArticleId());
+        if (!article.getIsComment().equals(SystemConstants.COMMENT_OK)){
+            throw new SystemException(AppHttpCodeEnum.COMMENT_NO);
+        }
+        // 判断评论是否为空
         if (!StringUtils.hasText(comment.getContent())){
             throw new SystemException(AppHttpCodeEnum.CONTENT_NOT_NULL);
         }

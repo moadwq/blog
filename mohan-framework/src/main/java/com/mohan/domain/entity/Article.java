@@ -45,7 +45,7 @@ public class Article {
     private String status;
     //访问量
     private Long viewCount;
-    //是否允许评论 1是，0否
+    //是否允许评论 1否，0是
     private String isComment;
     @TableField(fill = FieldFill.INSERT)
     private Long createBy;
