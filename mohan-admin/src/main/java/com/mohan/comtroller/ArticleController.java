@@ -2,6 +2,7 @@ package com.mohan.comtroller;
 
 import com.mohan.domain.dto.ArticleDto;
 import com.mohan.domain.dto.ArticleListDto;
+import com.mohan.domain.vo.ArticleTagVo;
 import com.mohan.service.ArticleService;
 import com.mohan.utils.ResponseResult;
 import io.swagger.annotations.Api;
@@ -38,6 +39,13 @@ public class ArticleController {
     @ApiImplicitParam(name = "id",value = "文章id")
     public ResponseResult getArticle(@PathVariable("id") Long id){
         ResponseResult result = articleService.getArticle(id);
+        return result;
+    }
+
+    @PutMapping()
+    @ApiOperation(value = "更新文章")
+    public ResponseResult updateArticle(@RequestBody ArticleTagVo articleTagVo){
+        ResponseResult result = articleService.updateArticle(articleTagVo);
         return result;
     }
 }

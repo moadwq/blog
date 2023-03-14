@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.mohan.domain.dto.ArticleDto;
 import com.mohan.domain.dto.ArticleListDto;
 import com.mohan.domain.entity.Article;
+import com.mohan.domain.vo.ArticleTagVo;
 import com.mohan.utils.ResponseResult;
 
 public interface ArticleService extends IService<Article> {
@@ -50,4 +51,9 @@ public interface ArticleService extends IService<Article> {
      * @param id 文章id
      */
     ResponseResult getArticle(Long id);
+
+    /**
+     * 更新文章
+     */
+    ResponseResult updateArticle(ArticleTagVo articleTagVo);
 }

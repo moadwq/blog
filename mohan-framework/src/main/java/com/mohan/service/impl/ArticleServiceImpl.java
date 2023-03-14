@@ -13,6 +13,7 @@ import com.mohan.domain.entity.Category;
 import com.mohan.domain.entity.Tag;
 import com.mohan.domain.vo.*;
 import com.mohan.mapper.ArticleMapper;
+import com.mohan.mapper.ArticleTagMapper;
 import com.mohan.mapper.TagMapper;
 import com.mohan.service.ArticleService;
 import com.mohan.service.ArticleTagService;
@@ -42,7 +43,8 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     private RedisCache redisCache;
     @Autowired
     private ArticleTagService articleTagService;
-
+    @Autowired
+    private ArticleTagMapper articleTagMapper;
     @Autowired
     private TagService tagService;
     @Override
@@ -81,6 +83,8 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         articleQuery.eq(Article::getStatus,SystemConstants.ARTICLE_STATUS_NORMAL);
         // 文章置顶，降序排序
         articleQuery.orderByDesc(Article::getIsTop);
+        articleQuery.orderByDesc(Article::getCreateTime);
+        articleQuery.orderByDesc(Article::getViewCount);
         // 分页
         Page<Article> page = new Page<>(pageNum, pageSize);
         page(page,articleQuery);
@@ -128,11 +132,6 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Transactional
     public ResponseResult addArticle(ArticleDto articleDto) {
         Article article = BeanCopyUtils.copyBean(articleDto, Article.class);
-        if (article.getIsTop().equals(0)){
-            article.setIsTop("1");
-        }else {
-            article.setIsTop("0");
-        }
         // 添加文章
         save(article);
 
@@ -164,7 +163,6 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Override
     public ResponseResult getArticle(Long id) {
         Article article = getById(id);
-        article = article.getIsTop().equals("0") ? article.setIsTop("1") : article.setIsTop("0");
         // 查看标签是否被删除
         Category category = categoryService.getById(article.getCategoryId());
         if (Objects.isNull(category)){
@@ -185,6 +183,19 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         ArticleTagVo articleTagVo = BeanCopyUtils.copyBean(article, ArticleTagVo.class);
         articleTagVo.setTags(tags);
         return ResponseResult.okResult(articleTagVo);
+    }
+
+    @Override
+    @Transactional
+    public ResponseResult updateArticle(ArticleTagVo articleTagVo) {
+        Article article = BeanCopyUtils.copyBean(articleTagVo, Article.class);
+        updateById(article);
+        List<ArticleTag> tags = articleTagVo.getTags().stream()
+                .map(aLong -> new ArticleTag(articleTagVo.getId(), aLong))
+                .collect(Collectors.toList());
+        articleTagMapper.deleteByArticleId(article.getId());
+        articleTagService.saveBatch(tags);
+        return ResponseResult.okResult();
     }
 
     /**

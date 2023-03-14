@@ -3,6 +3,7 @@ package com.mohan.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.mohan.domain.entity.ArticleTag;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 
 /**
@@ -13,5 +14,7 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface ArticleTagMapper extends BaseMapper<ArticleTag> {
+
+    void deleteByArticleId(@Param("articleId") Long articleId);
 
 }
