@@ -24,8 +24,8 @@ public enum AppHttpCodeEnum {
     CONTENT_NOT_NULL(509, "评论内容不能为空"),
     FILETYPE_ERROR(510,"文件类型错误，请上传jpg/png/jpeg文件"),
 
-    NO_ADMIN(511,"普通用户不能登录")
-    ;
+    NO_ADMIN(511,"普通用户不能登录"),
+    MENU_FAILED(512, "上级菜单不能是自己");
 
     int code;
     String msg;

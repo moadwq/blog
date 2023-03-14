@@ -3,14 +3,21 @@ package com.mohan.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mohan.contants.SystemConstants;
+import com.mohan.domain.dto.MenuDto;
 import com.mohan.domain.entity.Menu;
+import com.mohan.domain.vo.MenuListVo;
 import com.mohan.domain.vo.MenuVo;
 import com.mohan.domain.vo.RouterVo;
+import com.mohan.enums.AppHttpCodeEnum;
+import com.mohan.exception.SystemException;
 import com.mohan.mapper.MenuMapper;
 import com.mohan.service.MenuService;
+import com.mohan.utils.BeanCopyUtils;
 import com.mohan.utils.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -61,6 +68,29 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
         List<MenuVo> menuTree = builderMenuTree(menuVos,0L);
 
         return ResponseResult.okResult(new RouterVo(menuTree));
+    }
+
+    @Override
+    public ResponseResult likeList(MenuDto menuDto) {
+        LambdaQueryWrapper<Menu> mq = new LambdaQueryWrapper<>();
+        mq.like(StringUtils.hasText(menuDto.getMenuName()),Menu::getMenuName,menuDto.getMenuName());
+        mq.like(StringUtils.hasText(menuDto.getStatus()),Menu::getStatus,menuDto.getStatus());
+        mq.orderByAsc(Menu::getParentId);
+        mq.orderByAsc(Menu::getOrderNum);
+        List<Menu> list = list(mq);
+        List<MenuListVo> menuListVos = BeanCopyUtils.copyBeanList(list, MenuListVo.class);
+
+        return ResponseResult.okResult(menuListVos);
+    }
+
+    @Override
+    public ResponseResult updateMenu(Menu menu) {
+        // 上级菜单 父id，不能是自己
+        if (menu.getParentId() == menu.getId() || menu.getParentId().equals(menu.getId())){
+            throw new SystemException(AppHttpCodeEnum.MENU_FAILED);
+        }
+        updateById(menu);
+        return ResponseResult.okResult();
     }
 
     /**

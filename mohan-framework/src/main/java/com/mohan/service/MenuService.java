@@ -1,6 +1,7 @@
 package com.mohan.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.mohan.domain.dto.MenuDto;
 import com.mohan.domain.entity.Menu;
 import com.mohan.domain.vo.RouterVo;
 import com.mohan.utils.ResponseResult;
@@ -27,4 +28,15 @@ public interface MenuService extends IService<Menu> {
      * 查询父子菜单
      */
     ResponseResult selectRouterMenuTreeByUserId(Long userId);
+
+
+    /**
+     * 模糊查询所有菜单
+     */
+    ResponseResult likeList(MenuDto menuDto);
+
+    /**
+     * 修改菜单信息
+     */
+    ResponseResult updateMenu(Menu menu);
 }
