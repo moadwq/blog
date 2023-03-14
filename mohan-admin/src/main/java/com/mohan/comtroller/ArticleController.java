@@ -12,6 +12,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/content/article")
 @Api(description = "文章相关接口")
@@ -47,5 +49,12 @@ public class ArticleController {
     public ResponseResult updateArticle(@RequestBody ArticleTagVo articleTagVo){
         ResponseResult result = articleService.updateArticle(articleTagVo);
         return result;
+    }
+
+    @DeleteMapping("/{id}")
+    @ApiOperation(value = "删除文章")
+    public ResponseResult delArticle(@PathVariable("id") List<Long> ids){
+        articleService.removeByIds(ids);
+        return ResponseResult.okResult();
     }
 }
