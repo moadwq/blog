@@ -6,6 +6,7 @@ import com.mohan.contants.SystemConstants;
 import com.mohan.domain.dto.MenuDto;
 import com.mohan.domain.entity.Menu;
 import com.mohan.domain.vo.MenuListVo;
+import com.mohan.domain.vo.MenuTreeVo;
 import com.mohan.domain.vo.MenuVo;
 import com.mohan.domain.vo.RouterVo;
 import com.mohan.enums.AppHttpCodeEnum;
@@ -20,6 +21,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -109,6 +111,21 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
         return ResponseResult.okResult();
     }
 
+    @Override
+    public ResponseResult treeselect() {
+        LambdaQueryWrapper<Menu> qw = new LambdaQueryWrapper<>();
+        qw.orderByAsc(Menu::getParentId);
+        qw.orderByAsc(Menu::getOrderNum);
+        List<Menu> list = list(qw);
+        List<MenuTreeVo> menuTreeVos = list.stream()
+                .map(menu -> new MenuTreeVo(menu.getId(), menu.getMenuName(), menu.getParentId(),null))
+                .collect(Collectors.toList());
+        // 迭代构建属性父子菜单
+        List<MenuTreeVo> treeVos = builderMenuTree2(menuTreeVos, 0L);
+        return ResponseResult.okResult(treeVos);
+
+    }
+
     /**
      * 构建父子菜单,方法递归
      * @param menuVos 所有菜单的集合
@@ -119,9 +136,24 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
                 // 过滤掉父id不符合的元素
                 .filter(menuVo -> menuVo.getParentId().equals(parentId))
                 // 根据父菜单id = 子菜单父id，查找父菜单的子菜单，并设置到父菜单的children属性中
-                .map(menuVo -> menuVo.setChildren(builderMenuTree(menuVos,menuVo.getId())))
+                .map(menuVo -> menuVo.setChildren(builderMenuTree(menuVos, menuVo.getId())))
                 .collect(Collectors.toList());
         return menuTree;
+    }
+
+    /**
+     * 构建父子菜单,方法递归
+     * @param menuTreeVos 所有菜单的集合
+     * @param parentId 父id
+     */
+    private List<MenuTreeVo> builderMenuTree2(List<MenuTreeVo> menuTreeVos, Long parentId) {
+        List<MenuTreeVo> treeVos = menuTreeVos.stream()
+                // 过滤掉父id不符合的元素
+                .filter(menuTreeVo -> menuTreeVo.getParentId().equals(parentId))
+                // 根据父菜单id = 子菜单父id，查找父菜单的子菜单，并设置到父菜单的children属性中
+                .map(menuTreeVo -> menuTreeVo.setChildren(builderMenuTree2(menuTreeVos, menuTreeVo.getId())))
+                .collect(Collectors.toList());
+        return treeVos;
     }
 
 }

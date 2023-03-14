@@ -44,4 +44,10 @@ public interface MenuService extends IService<Menu> {
      * 删除菜单
      */
     ResponseResult delMenu(Long id);
+
+    /**
+     * 获得所有菜单名称，树形展示
+     */
+    ResponseResult treeselect();
+
 }
