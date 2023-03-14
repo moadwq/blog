@@ -2,6 +2,7 @@ package com.mohan.comtroller;
 
 import com.mohan.domain.dto.MenuDto;
 import com.mohan.domain.entity.Menu;
+import com.mohan.domain.vo.MenuTreeVo;
 import com.mohan.service.MenuService;
 import com.mohan.utils.BeanCopyUtils;
 import com.mohan.utils.ResponseResult;
@@ -50,7 +51,13 @@ public class MenuController {
 
     @GetMapping("/treeselect")
     public ResponseResult treeselect(){
-        ResponseResult result = menuService.treeselect();
+        List<MenuTreeVo> menuTreeVos = menuService.treeselect();
+        return ResponseResult.okResult(menuTreeVos);
+    }
+
+    @GetMapping("/roleMenuTreeselect/{id}")
+    public ResponseResult roleMenuTreeSelect(@PathVariable("id") Long id){
+        ResponseResult result = menuService.roleMenuTreeSelect(id);
         return result;
     }
 

@@ -5,14 +5,13 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mohan.contants.SystemConstants;
 import com.mohan.domain.dto.MenuDto;
 import com.mohan.domain.entity.Menu;
-import com.mohan.domain.vo.MenuListVo;
-import com.mohan.domain.vo.MenuTreeVo;
-import com.mohan.domain.vo.MenuVo;
-import com.mohan.domain.vo.RouterVo;
+import com.mohan.domain.entity.RoleMenu;
+import com.mohan.domain.vo.*;
 import com.mohan.enums.AppHttpCodeEnum;
 import com.mohan.exception.SystemException;
 import com.mohan.mapper.MenuMapper;
 import com.mohan.service.MenuService;
+import com.mohan.service.RoleMenuService;
 import com.mohan.utils.BeanCopyUtils;
 import com.mohan.utils.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +34,8 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
 
     @Autowired
     private MenuMapper menuMapper;
+    @Autowired
+    private RoleMenuService roleMenuService;
 
     @Override
     public List<String> selectPermsByUserId(Long id) {
@@ -112,7 +113,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     }
 
     @Override
-    public ResponseResult treeselect() {
+    public List<MenuTreeVo> treeselect() {
         LambdaQueryWrapper<Menu> qw = new LambdaQueryWrapper<>();
         qw.orderByAsc(Menu::getParentId);
         qw.orderByAsc(Menu::getOrderNum);
@@ -122,8 +123,23 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
                 .collect(Collectors.toList());
         // 迭代构建属性父子菜单
         List<MenuTreeVo> treeVos = builderMenuTree2(menuTreeVos, 0L);
-        return ResponseResult.okResult(treeVos);
+        return treeVos;
 
+    }
+
+    @Override
+    public ResponseResult roleMenuTreeSelect(Long id) {
+        // 查询所有菜单，树形展示
+        List<MenuTreeVo> treeselect = treeselect();
+        // 查询角色拥有的菜单id
+        LambdaQueryWrapper<RoleMenu> qw = new LambdaQueryWrapper<>();
+        qw.eq(RoleMenu::getRoleId,id);
+        List<RoleMenu> list = roleMenuService.list(qw);
+        List<Long> menuIds = list.stream()
+                .map(RoleMenu::getMenuId)
+                .collect(Collectors.toList());
+        RoleMenuVo roleMenuVo = new RoleMenuVo(treeselect, menuIds);
+        return ResponseResult.okResult(roleMenuVo);
     }
 
     /**

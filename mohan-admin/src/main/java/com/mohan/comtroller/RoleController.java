@@ -35,4 +35,10 @@ public class RoleController {
         return result;
     }
 
+    @GetMapping("/{id}")
+    public ResponseResult getRoleById(@PathVariable("id") Long id){
+        Role role = roleService.getById(id);
+        return ResponseResult.okResult(role);
+    }
+
 }

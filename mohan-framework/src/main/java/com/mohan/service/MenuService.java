@@ -3,6 +3,7 @@ package com.mohan.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.mohan.domain.dto.MenuDto;
 import com.mohan.domain.entity.Menu;
+import com.mohan.domain.vo.MenuTreeVo;
 import com.mohan.domain.vo.RouterVo;
 import com.mohan.utils.ResponseResult;
 
@@ -48,6 +49,10 @@ public interface MenuService extends IService<Menu> {
     /**
      * 获得所有菜单名称，树形展示
      */
-    ResponseResult treeselect();
+    List<MenuTreeVo> treeselect();
 
+    /**
+     * 根据角色id 查询角色用户的菜单，树形展示
+     */
+    ResponseResult roleMenuTreeSelect(Long id);
 }
