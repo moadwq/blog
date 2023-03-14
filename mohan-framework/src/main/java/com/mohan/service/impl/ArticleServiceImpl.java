@@ -9,6 +9,7 @@ import com.mohan.domain.dto.ArticleDto;
 import com.mohan.domain.dto.ArticleListDto;
 import com.mohan.domain.entity.Article;
 import com.mohan.domain.entity.ArticleTag;
+import com.mohan.domain.entity.Category;
 import com.mohan.domain.entity.Tag;
 import com.mohan.domain.vo.*;
 import com.mohan.mapper.ArticleMapper;
@@ -29,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 
@@ -42,7 +44,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     private ArticleTagService articleTagService;
 
     @Autowired
-    private ArticleMapper articleMapper;
+    private TagService tagService;
     @Override
     public ResponseResult hotArticleList() {
         // 封装查询条件
@@ -161,16 +163,27 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
     @Override
     public ResponseResult getArticle(Long id) {
-        ArticleTagVo articleTagVo = articleMapper.getArticle(id);
-        if(Objects.isNull(articleTagVo)){
-            Article article = getById(id);
-            return ResponseResult.okResult(article);
+        Article article = getById(id);
+        article = article.getIsTop().equals("0") ? article.setIsTop("1") : article.setIsTop("0");
+        // 查看标签是否被删除
+        Category category = categoryService.getById(article.getCategoryId());
+        if (Objects.isNull(category)){
+            article.setCategoryId(null);
         }
-        if (articleTagVo.getIsTop().equals(0)){
-            articleTagVo.setIsTop("1");
-        }else {
-            articleTagVo.setIsTop("0");
-        }
+        // 根据文章id查询标签id
+        LambdaQueryWrapper<ArticleTag> qw = new LambdaQueryWrapper<>();
+        qw.eq(ArticleTag::getArticleId,article.getId());
+        List<ArticleTag> list = articleTagService.list(qw);
+        // 遍历标签id，过滤掉被删除的标签
+        List<Long> tags = list.stream()
+                .filter(articleTag -> {
+                    Tag tag = tagService.getById(articleTag.getTagId());
+                    return !Objects.isNull(tag);
+                })
+                .map(ArticleTag::getTagId)
+                .collect(Collectors.toList());
+        ArticleTagVo articleTagVo = BeanCopyUtils.copyBean(article, ArticleTagVo.class);
+        articleTagVo.setTags(tags);
         return ResponseResult.okResult(articleTagVo);
     }
 

@@ -11,9 +11,4 @@ import java.util.List;
 @Mapper
 public interface ArticleMapper extends BaseMapper<Article> {
 
-    /**
-     * 查询文章信息和标签信息
-     * @param id 文章id
-     */
-    ArticleTagVo getArticle(@Param("id") Long id);
 }
