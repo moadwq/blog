@@ -7,6 +7,8 @@ import com.mohan.domain.entity.Article;
 import com.mohan.domain.vo.ArticleTagVo;
 import com.mohan.utils.ResponseResult;
 
+import java.util.List;
+
 public interface ArticleService extends IService<Article> {
 
     /**
@@ -56,4 +58,11 @@ public interface ArticleService extends IService<Article> {
      * 更新文章
      */
     ResponseResult updateArticle(ArticleTagVo articleTagVo);
+
+    /**
+     * 删除文章和其关联的标签
+     * @param ids
+     * @return
+     */
+    ResponseResult delArticle(List<Long> ids);
 }

@@ -198,6 +198,17 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         return ResponseResult.okResult();
     }
 
+    @Override
+    @Transactional
+    public ResponseResult delArticle(List<Long> ids) {
+        removeByIds(ids);
+        // 删除关联标签
+        for (Long id : ids) {
+            articleTagMapper.deleteByArticleId(id);
+        }
+        return ResponseResult.okResult();
+    }
+
     /**
      * 从redis中查询实时浏览量，并替换
      * @param articles 需要替换浏览量的文章列表

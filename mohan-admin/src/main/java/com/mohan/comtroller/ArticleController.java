@@ -54,7 +54,7 @@ public class ArticleController {
     @DeleteMapping("/{id}")
     @ApiOperation(value = "删除文章")
     public ResponseResult delArticle(@PathVariable("id") List<Long> ids){
-        articleService.removeByIds(ids);
-        return ResponseResult.okResult();
+        ResponseResult result = articleService.delArticle(ids);
+        return result;
     }
 }
