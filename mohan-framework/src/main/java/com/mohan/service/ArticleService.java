@@ -61,8 +61,6 @@ public interface ArticleService extends IService<Article> {
 
     /**
      * 删除文章和其关联的标签
-     * @param ids
-     * @return
      */
     ResponseResult delArticle(List<Long> ids);
 }

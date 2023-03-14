@@ -6,6 +6,8 @@ import com.mohan.domain.dto.UserPageDto;
 import com.mohan.domain.entity.User;
 import com.mohan.utils.ResponseResult;
 
+import java.util.List;
+
 
 /**
  * 用户表(User)表服务接口
@@ -39,4 +41,9 @@ public interface UserService extends IService<User> {
      * 添加用户和其关联的角色id
      */
     ResponseResult addUser(AddUserDto addUserDto);
+
+    /**
+     * 删除用户和其关联的角色id
+     */
+    ResponseResult delUser(List<Long> ids);
 }

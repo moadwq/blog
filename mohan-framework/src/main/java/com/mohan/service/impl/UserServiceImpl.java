@@ -11,6 +11,7 @@ import com.mohan.domain.vo.PageVo;
 import com.mohan.enums.AppHttpCodeEnum;
 import com.mohan.exception.SystemException;
 import com.mohan.mapper.UserMapper;
+import com.mohan.mapper.UserRoleMapper;
 import com.mohan.service.UserRoleService;
 import com.mohan.utils.BeanCopyUtils;
 import com.mohan.utils.ResponseResult;
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.mohan.service.UserService;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
@@ -39,6 +41,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     private PasswordEncoder passwordEncoder;
     @Autowired
     private UserRoleService userRoleService;
+    @Autowired
+    private UserRoleMapper userRoleMapper;
     @Override
     public ResponseResult getUserInfo() {
         Long userId = SecurityUtil.getUserId();
@@ -132,6 +136,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 .map(roleId -> new UserRole(user.getId(), roleId))
                 .collect(Collectors.toList());
         userRoleService.saveBatch(userRoles);
+        return ResponseResult.okResult();
+    }
+
+    @Override
+    @Transactional
+    public ResponseResult delUser(List<Long> ids) {
+        removeByIds(ids);
+        // 删除关联的角色id
+        for (Long id : ids) {
+            userRoleMapper.deleteByUserId(id);
+        }
         return ResponseResult.okResult();
     }
 
