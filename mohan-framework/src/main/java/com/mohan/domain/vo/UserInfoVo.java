@@ -25,5 +25,9 @@ public class UserInfoVo {
 
     private String email;
 
+    private String password;
+
+    private String newPwd;
+
 
 }

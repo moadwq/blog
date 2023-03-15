@@ -59,6 +59,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         User user = getById(userId);
 
         UserInfoVo userInfoVo = BeanCopyUtils.copyBean(user,UserInfoVo.class);
+        userInfoVo.setPassword(null);
         return ResponseResult.okResult(userInfoVo);
     }
 
