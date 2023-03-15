@@ -13,7 +13,7 @@ public class UserPageDto {
     private Integer pageNum;
     private Integer pageSize;
     private String userName;
-    private String phonenumber;
+    private String email;
     private String status;
 
 }

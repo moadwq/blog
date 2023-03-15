@@ -101,7 +101,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public ResponseResult pageList(UserPageDto userPageDto) {
         LambdaQueryWrapper<User> qw = new LambdaQueryWrapper<>();
         qw.like(StringUtils.hasText(userPageDto.getUserName()),User::getUserName,userPageDto.getUserName());
-        qw.like(StringUtils.hasText(userPageDto.getPhonenumber()),User::getPhonenumber,userPageDto.getPhonenumber());
+        qw.like(StringUtils.hasText(userPageDto.getEmail()),User::getEmail,userPageDto.getEmail());
         qw.like(StringUtils.hasText(userPageDto.getStatus()),User::getStatus,userPageDto.getStatus());
         // 分页
         Page<User> userPage = new Page<>(userPageDto.getPageNum(), userPageDto.getPageSize());
@@ -133,8 +133,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
 //        else if (userInfoExist(3, user.getEmail())) {
 //            throw new SystemException(AppHttpCodeEnum.EMAIL_EXIST);
-//        } else if (userInfoExist(4, user.getPhonenumber())) {
-//            throw new SystemException(AppHttpCodeEnum.PHONE_NUMBER_EXIST);
 //        }
         // 密码加密
         String encodePassword = passwordEncoder.encode(user.getPassword());
