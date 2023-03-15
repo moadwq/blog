@@ -3,6 +3,7 @@ package com.mohan.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.mohan.domain.dto.AddUserDto;
 import com.mohan.domain.dto.ChangeUserDto;
+import com.mohan.domain.dto.UpdateUserDto;
 import com.mohan.domain.dto.UserPageDto;
 import com.mohan.domain.entity.User;
 import com.mohan.domain.vo.UserDto;
@@ -27,7 +28,7 @@ public interface UserService extends IService<User> {
     /**
      * 修改用户信息
      */
-    ResponseResult updateUserInfo(User user);
+    ResponseResult updateUserInfo(UpdateUserDto updateUserDto);
 
     /**
      * 用户注册

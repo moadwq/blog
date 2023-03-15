@@ -32,8 +32,7 @@ public class UserController {
     @SystemLog(businessName = "更新用户信息")
     @ApiOperation(value = "更新用户信息")
     public ResponseResult updateUserInfo(@RequestBody UpdateUserDto updateUserDto){
-        User user = BeanCopyUtils.copyBean(updateUserDto, User.class);
-        ResponseResult result = userService.updateUserInfo(user);
+        ResponseResult result = userService.updateUserInfo(updateUserDto);
         return result;
     }
 

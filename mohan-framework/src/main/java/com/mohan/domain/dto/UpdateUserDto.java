@@ -27,4 +27,8 @@ public class UpdateUserDto {
     //头像
     @ApiModelProperty(notes = "头像")
     private String avatar;
+    @ApiModelProperty(notes = "旧密码")
+    private String password;
+    @ApiModelProperty(notes = "新密码")
+    private String newPwd;
 }

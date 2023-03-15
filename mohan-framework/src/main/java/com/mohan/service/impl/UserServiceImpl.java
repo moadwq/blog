@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mohan.contants.SystemConstants;
 import com.mohan.domain.dto.AddUserDto;
 import com.mohan.domain.dto.ChangeUserDto;
+import com.mohan.domain.dto.UpdateUserDto;
 import com.mohan.domain.dto.UserPageDto;
 import com.mohan.domain.entity.Role;
 import com.mohan.domain.entity.User;
@@ -24,6 +25,10 @@ import com.mohan.utils.ResponseResult;
 import com.mohan.utils.SecurityUtil;
 import com.mohan.domain.vo.UserInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.mohan.service.UserService;
@@ -44,7 +49,8 @@ import java.util.stream.Collectors;
  */
 @Service("userService")
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
-
+    @Autowired
+    private AuthenticationManager authenticationManager;
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
@@ -64,9 +70,49 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public ResponseResult updateUserInfo(User user) {
+    public ResponseResult updateUserInfo(UpdateUserDto updateUserDto) {
+        User user = getById(updateUserDto.getId());
+        // 密码校验
+        pwdCheck(updateUserDto, user);
+
+        user = BeanCopyUtils.copyBean(updateUserDto, User.class);
         updateById(user);
         return ResponseResult.okResult();
+    }
+
+    /**
+     * 密码校验
+     * @param updateUserDto 需要更新的用户数据
+     * @param user 用户原本数据
+     */
+    private void pwdCheck(UpdateUserDto updateUserDto, User user) {
+        // 判断用户是否提交了旧密码，是否需要修改密码
+        if (StringUtils.hasText(updateUserDto.getPassword())){
+            try {
+                // 验证旧密码是否正确
+                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUserName(), updateUserDto.getPassword());
+                Authentication authenticate = authenticationManager.authenticate(authenticationToken);
+            } catch (AuthenticationException e) {
+                throw new SystemException(AppHttpCodeEnum.OLDPWD_ERROR);
+            }
+            // 判断是否提交新密码
+            if (!StringUtils.hasText(updateUserDto.getNewPwd())){
+                throw new SystemException(AppHttpCodeEnum.NEWPWD_NOTNULL);
+            }
+            // 校验新密码
+            String newPwd = updateUserDto.getNewPwd();
+            if (newPwd.contains(" ")){
+                throw new SystemException(AppHttpCodeEnum.NEWPWD_ERROR);
+            } else if (newPwd.length() < 6) {
+                throw new SystemException(AppHttpCodeEnum.NEWPWD_ERROR);
+            }
+            // 如果旧密码输入正确，且新密码校验通过，修改密码
+            updateUserDto.setPassword(updateUserDto.getNewPwd());
+        }
+        // 如果旧密码没填写，但填写了新密码
+        if (!StringUtils.hasText(updateUserDto.getPassword()) && StringUtils.hasText(updateUserDto.getNewPwd())){
+            throw new SystemException(AppHttpCodeEnum.OLDPWD_ERROR);
+        }
     }
 
     @Override
