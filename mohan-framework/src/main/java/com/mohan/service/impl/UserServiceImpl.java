@@ -124,8 +124,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             throw new SystemException(AppHttpCodeEnum.REQUIRE_NICKNAME);
         } else if (!StringUtils.hasText(user.getEmail())) {
             throw new SystemException(AppHttpCodeEnum.REQUIRE_EMAIL);
-        } else if (!StringUtils.hasText(user.getPhonenumber())) {
-            throw new SystemException(AppHttpCodeEnum.REQUIRE_PHONE_NUMBER);
         }
         // 对数据是否重复进行判断
         if (userInfoExist(1,user.getUserName())){
