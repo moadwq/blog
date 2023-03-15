@@ -70,12 +70,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public ResponseResult updateUserInfo(UpdateUserDto updateUserDto) {
         User user = getById(updateUserDto.getId());
+        ResponseResult result = new ResponseResult();
         // 密码校验
-        pwdCheck(updateUserDto, user);
+        pwdCheck(result,updateUserDto, user);
 
         user = BeanCopyUtils.copyBean(updateUserDto, User.class);
         updateById(user);
-        return ResponseResult.okResult();
+        return result;
     }
 
     /**
@@ -83,7 +84,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @param updateUserDto 需要更新的用户数据
      * @param user 用户原本数据
      */
-    private void pwdCheck(UpdateUserDto updateUserDto, User user) {
+    private void pwdCheck(ResponseResult result,UpdateUserDto updateUserDto, User user) {
         // 判断用户是否提交了旧密码，是否需要修改密码
         if (StringUtils.hasText(updateUserDto.getPassword())){
             try {
@@ -107,6 +108,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             // 如果旧密码输入正确，且新密码校验通过，修改密码
             newPwd = passwordEncoder.encode(updateUserDto.getNewPwd());
             updateUserDto.setPassword(newPwd);
+            result.setData(1);
         }
         // 如果旧密码没填写，但填写了新密码
         if (!StringUtils.hasText(updateUserDto.getPassword()) && StringUtils.hasText(updateUserDto.getNewPwd())){
