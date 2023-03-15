@@ -12,7 +12,8 @@ import com.mohan.domain.entity.Role;
 import com.mohan.domain.entity.User;
 import com.mohan.domain.entity.UserRole;
 import com.mohan.domain.vo.PageVo;
-import com.mohan.domain.vo.UserDto;
+import com.mohan.domain.dto.UserDto;
+import com.mohan.domain.vo.UserPwdInfoVo;
 import com.mohan.domain.vo.UserRoleVo;
 import com.mohan.enums.AppHttpCodeEnum;
 import com.mohan.exception.SystemException;
@@ -36,9 +37,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -64,7 +62,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         Long userId = SecurityUtil.getUserId();
         User user = getById(userId);
 
-        UserInfoVo userInfoVo = BeanCopyUtils.copyBean(user,UserInfoVo.class);
+        UserPwdInfoVo userInfoVo = BeanCopyUtils.copyBean(user, UserPwdInfoVo.class);
         userInfoVo.setPassword(null);
         return ResponseResult.okResult(userInfoVo);
     }

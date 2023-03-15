@@ -5,7 +5,7 @@ import lombok.experimental.Accessors;
 
 @Data
 @Accessors(chain = true)
-public class UserInfoVo {
+public class UserPwdInfoVo {
     /**
      * 主键
      */
@@ -24,4 +24,8 @@ public class UserInfoVo {
     private String sex;
 
     private String email;
+
+    private String password;
+
+    private String newPwd;
 }

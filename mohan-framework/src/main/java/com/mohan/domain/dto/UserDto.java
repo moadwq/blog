@@ -1,4 +1,4 @@
-package com.mohan.domain.vo;
+package com.mohan.domain.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

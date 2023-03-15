@@ -1,11 +1,8 @@
 package com.mohan.comtroller;
 
 import com.mohan.domain.dto.*;
-import com.mohan.domain.entity.User;
-import com.mohan.domain.vo.UserDto;
-import com.mohan.domain.vo.UserRoleVo;
+import com.mohan.domain.dto.UserDto;
 import com.mohan.service.UserService;
-import com.mohan.utils.BeanCopyUtils;
 import com.mohan.utils.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

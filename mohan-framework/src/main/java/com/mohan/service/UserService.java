@@ -6,7 +6,7 @@ import com.mohan.domain.dto.ChangeUserDto;
 import com.mohan.domain.dto.UpdateUserDto;
 import com.mohan.domain.dto.UserPageDto;
 import com.mohan.domain.entity.User;
-import com.mohan.domain.vo.UserDto;
+import com.mohan.domain.dto.UserDto;
 import com.mohan.utils.ResponseResult;
 
 import java.util.List;
