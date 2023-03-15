@@ -70,6 +70,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public ResponseResult updateUserInfo(UpdateUserDto updateUserDto) {
         User user = getById(updateUserDto.getId());
+        // 如果没有修改密码，返回给前端一个 2
         ResponseResult result = new ResponseResult();
         User user1 = new User();
         user1.setId(2L);
@@ -98,7 +99,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             // 如果旧密码输入正确，且新密码校验通过，修改密码
             newPwd = passwordEncoder.encode(updateUserDto.getNewPwd());
             updateUserDto.setPassword(newPwd);
-
+            // 如果修改了密码，给前端返回 1
             user1.setId(1L);
             result.setData(user1);
         }
