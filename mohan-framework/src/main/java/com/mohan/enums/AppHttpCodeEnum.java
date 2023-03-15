@@ -13,6 +13,7 @@ public enum AppHttpCodeEnum {
     NEED_LOGIN(401,"需要登录后操作"),
     NO_OPERATOR_AUTH(403,"无权限操作"),
     SYSTEM_ERROR(500,"出现错误"),
+    UNKNOWN_ERROR(500,"请稍后再试"),
     USERNAME_EXIST(501,"用户名已存在"),
     NICKNAME_EXIST(501,"昵称已存在"),
     EMAIL_EXIST(501, "邮箱已存在"),
@@ -32,6 +33,7 @@ public enum AppHttpCodeEnum {
     HAVE_CHILDREN_MENU(513, "拥有子菜单，不能删除"),
     COMMENT_NO(520, "当前文章禁止评论"),
     UPLOAD_TIMES(530, "每天只能上传一次头像");
+
 
 
 
