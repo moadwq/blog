@@ -71,8 +71,42 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public ResponseResult updateUserInfo(UpdateUserDto updateUserDto) {
         User user = getById(updateUserDto.getId());
         ResponseResult result = new ResponseResult();
-        // 密码校验
-        pwdCheck(result,updateUserDto, user);
+        User user1 = new User();
+        user1.setId(2L);
+        result.setData(user1);
+
+        // 判断用户是否提交了旧密码，是否需要修改密码
+        if (StringUtils.hasText(updateUserDto.getPassword())){
+            try {
+                // 验证旧密码是否正确
+                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUserName(), updateUserDto.getPassword());
+                Authentication authenticate = authenticationManager.authenticate(authenticationToken);
+            } catch (AuthenticationException e) {
+                throw new SystemException(AppHttpCodeEnum.OLDPWD_ERROR);
+            }
+            // 判断是否提交新密码
+            if (!StringUtils.hasText(updateUserDto.getNewPwd())){
+                throw new SystemException(AppHttpCodeEnum.NEWPWD_NOTNULL);
+            }
+            // 校验新密码
+            String newPwd = updateUserDto.getNewPwd();
+            if (newPwd.contains(" ")){
+                throw new SystemException(AppHttpCodeEnum.NEWPWD_ERROR);
+            } else if (newPwd.length() < 6) {
+                throw new SystemException(AppHttpCodeEnum.NEWPWD_ERROR);
+            }
+            // 如果旧密码输入正确，且新密码校验通过，修改密码
+            newPwd = passwordEncoder.encode(updateUserDto.getNewPwd());
+            updateUserDto.setPassword(newPwd);
+
+            user1.setId(1L);
+            result.setData(user1);
+        }
+        // 如果旧密码没填写，但填写了新密码
+        if (!StringUtils.hasText(updateUserDto.getPassword()) && StringUtils.hasText(updateUserDto.getNewPwd())){
+            throw new SystemException(AppHttpCodeEnum.OLDPWD_ERROR);
+        }
+
 
         user = BeanCopyUtils.copyBean(updateUserDto, User.class);
         updateById(user);
@@ -108,7 +142,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             // 如果旧密码输入正确，且新密码校验通过，修改密码
             newPwd = passwordEncoder.encode(updateUserDto.getNewPwd());
             updateUserDto.setPassword(newPwd);
-            result.setData(1);
+            User user1 = new User();
+            user1.setId(1L);
+            result.setData(user1);
         }
         // 如果旧密码没填写，但填写了新密码
         if (!StringUtils.hasText(updateUserDto.getPassword()) && StringUtils.hasText(updateUserDto.getNewPwd())){
