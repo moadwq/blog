@@ -2,12 +2,14 @@ package com.mohan.comtroller;
 
 import com.mohan.domain.dto.ArticleDto;
 import com.mohan.domain.dto.ArticleListDto;
+import com.mohan.domain.dto.ChangeStatus;
+import com.mohan.domain.entity.Article;
 import com.mohan.domain.vo.ArticleTagVo;
 import com.mohan.service.ArticleService;
+import com.mohan.utils.BeanCopyUtils;
 import com.mohan.utils.ResponseResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -57,4 +59,12 @@ public class ArticleController {
         ResponseResult result = articleService.delArticle(ids);
         return result;
     }
+
+    @PutMapping("/changeStatus")
+    public ResponseResult changeStatus(@RequestBody ChangeStatus ca){
+        Article article = BeanCopyUtils.copyBean(ca, Article.class);
+        articleService.updateById(article);
+        return ResponseResult.okResult();
+    }
+
 }

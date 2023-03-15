@@ -3,6 +3,7 @@ package com.mohan.comtroller;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.fastjson.JSON;
 import com.mohan.domain.dto.CategoryPageDto;
+import com.mohan.domain.dto.ChangeStatus;
 import com.mohan.domain.entity.Category;
 import com.mohan.domain.vo.CategoryListPageVo;
 import com.mohan.domain.vo.CategoryListVo;
@@ -77,6 +78,13 @@ public class CategoryController {
     @DeleteMapping("/{id}")
     public ResponseResult delCategory(@PathVariable("id") List<Long> ids){
         categoryService.removeByIds(ids);
+        return ResponseResult.okResult();
+    }
+
+    @PutMapping("/changeStatus")
+    public ResponseResult changeStatus(@RequestBody ChangeStatus cs){
+        Category category = BeanCopyUtils.copyBean(cs, Category.class);
+        categoryService.updateById(category);
         return ResponseResult.okResult();
     }
 
