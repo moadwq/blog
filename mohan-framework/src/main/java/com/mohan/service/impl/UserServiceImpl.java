@@ -170,10 +170,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             throw new SystemException(AppHttpCodeEnum.USERNAME_EXIST);
         } else if (userInfoExist(2,user.getNickName())) {
             throw new SystemException(AppHttpCodeEnum.NICKNAME_EXIST);
+        } else if (userInfoExist(3, user.getEmail())) {
+            throw new SystemException(AppHttpCodeEnum.EMAIL_EXIST);
         }
-//        else if (userInfoExist(3, user.getEmail())) {
-//            throw new SystemException(AppHttpCodeEnum.EMAIL_EXIST);
-//        }
         // 密码加密
         String encodePassword = passwordEncoder.encode(user.getPassword());
         // 添加用户
@@ -215,10 +214,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             throw new SystemException(AppHttpCodeEnum.USERNAME_EXIST);
         } else if (userInfoExist(2,user.getNickName())) {
             throw new SystemException(AppHttpCodeEnum.NICKNAME_EXIST);
+        } else if (userInfoExist(3, user.getEmail())) {
+            throw new SystemException(AppHttpCodeEnum.EMAIL_EXIST);
         }
-//        else if (userInfoExist(3, user.getEmail())) {
-//            throw new SystemException(AppHttpCodeEnum.EMAIL_EXIST);
-//        }
         // 密码加密
         String encodePassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodePassword);
