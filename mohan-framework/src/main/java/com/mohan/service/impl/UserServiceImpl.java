@@ -62,9 +62,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         Long userId = SecurityUtil.getUserId();
         User user = getById(userId);
 
-        UserPwdInfoVo userInfoVo = BeanCopyUtils.copyBean(user, UserPwdInfoVo.class);
-        userInfoVo.setPassword(null);
-        return ResponseResult.okResult(userInfoVo);
+        UserPwdInfoVo userPwdInfoVo = BeanCopyUtils.copyBean(user, UserPwdInfoVo.class);
+        userPwdInfoVo.setPassword(null);
+        return ResponseResult.okResult(userPwdInfoVo);
     }
 
     @Override
@@ -105,7 +105,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 throw new SystemException(AppHttpCodeEnum.NEWPWD_ERROR);
             }
             // 如果旧密码输入正确，且新密码校验通过，修改密码
-            updateUserDto.setPassword(updateUserDto.getNewPwd());
+            newPwd = passwordEncoder.encode(updateUserDto.getNewPwd());
+            updateUserDto.setPassword(newPwd);
         }
         // 如果旧密码没填写，但填写了新密码
         if (!StringUtils.hasText(updateUserDto.getPassword()) && StringUtils.hasText(updateUserDto.getNewPwd())){
