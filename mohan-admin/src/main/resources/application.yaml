@@ -17,7 +17,9 @@ spring:
     port: 6379  # 端口
     password: 151463  # 密码
     database: 1  # redis 数据库索引，默认为0
-
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
 # 配置mybatis-plus
 mybatis-plus:
   configuration:
@@ -39,10 +41,11 @@ mybatis-plus:
       logic-delete-value: 1
     banner: false
 
+# 填写自己的oss
 oss:
-  accessKey: CPHKQwIzdgLdaFjvKqjZLL_tWPDEosioUrFSepia
-  secretKey: g8bfatlhlBF-y_7RcsdtQC7mtGRtxvLmwANa8_7V
-  bucket: mh-blog-image
-  url: http://rray0ungs.hn-bkt.clouddn.com/
+  accessKey:
+  secretKey:
+  bucket:
+  url:
 
 
