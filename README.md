@@ -1,5 +1,5 @@
 # 个人博客
-一个简单的 vue + springboot 前后端分离个人博客项目
+一个简单的 vue + springboot 前后端分离个人博客项目，项目分为前台和后台。
 
 # 使用技术
 jdk：8
@@ -21,13 +21,13 @@ easyexcel：3.0.5
 安全框架使用 SpringSecurity
 
 # 预览
-**前台**
+### 前台
 ![img.png](img.png)
 ![img_1.png](img_1.png)
 ![img_2.png](img_2.png)
 ![img_3.png](img_3.png)
 ![img_4.png](img_4.png)
-**后台**
+### 后台
 ![img_5.png](img_5.png)
 ![img_6.png](img_6.png)
 ![img_7.png](img_7.png)
